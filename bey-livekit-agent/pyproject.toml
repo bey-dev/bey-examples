@@ -1,0 +1,13 @@
+[project]
+name = "bey-livekit-agent"
+version = "0.1.0"
+description = "Minimal avatar agent using the Beyond Presence API"
+authors = [{ name = "Beyond Presence GmbH", email = "info@beyondpresence.ai" }]
+requires-python = "~= 3.9"
+dependencies = [
+    "livekit-agents == 1.0.0rc6",
+    "livekit-plugins-bey @ git+https://github.com/niqodea/livekit-agents.git@bey-plugin-0.0.2#subdirectory=livekit-plugins/livekit-plugins-bey",
+    "livekit-plugins-openai == 1.0.0rc6",
+    "livekit-plugins-silero == 1.0.0rc6",
+    "python-dotenv ~= 1.0",
+]
