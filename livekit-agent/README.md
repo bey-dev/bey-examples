@@ -37,9 +37,4 @@ Omitting the flag will run the default configuration.
 
 ## Documentation
 
-For detailed usage instructions and API reference, visit [our docs](https://docs.bey.dev).
-
-## Contact
-
-For issues or suggestions, please [contact us](mailto:info@beyondpresence.ai).
-This release is in beta; your feedback is valuable!
+For detailed usage instructions and API reference, visit [our docs](https://docs.bey.dev/integration/livekit).
