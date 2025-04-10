@@ -17,22 +17,30 @@ It leverages voice, STT, TTS, and LLM functionalities via several LiveKit plugin
 
 ### Environment
 
-Copy `.env.template` to `.env` and update it with your API keys for the Beyond Presence and OpenAI APIs.
+Copy `.env.template` to `.env` and add your API keys:
 
-- To generate a Beyond Presence API key, login to the [creator dashboard](https://app.bey.chat) and navigate to Settings > API Keys > Create API Key.
-- To generate an OpenAI key, navigate to [this page](https://platform.openai.com/settings/organization/api-keys).
+- **Beyond Presence**: [Creator Dashboard](https://app.bey.chat) > Settings > API Keys > Create API Key.
+- **OpenAI**: [API Keys page](https://platform.openai.com/settings/organization/api-keys).
 
 ### Services
 
-This example is based on three services:
+This example uses:
 
 - a LiveKit server to host calls
-- a LiveKit client with video support to join calls on the server and visualize the avatar agent
-- a LiveKit agent worker to subscribe to dispatch avatar agents to new calls
+- a LiveKit agent worker to dispatch avatar agents
+- a LiveKit client (video-enabled) to join calls and visualize the avatar
 
 #### Server
 
-To use your own LiveKit server, replace the values of of the `LIVEKIT` environment variables with your server details:
+Install the [LiveKit CLI](https://docs.livekit.io/home/self-hosting/server-setup/#install-livekit-server), then run:
+
+```sh
+livekit-server --dev
+```
+
+The default `.env` values point to this local instance.
+
+To use a remote server, update `.env`:
 
 ```
 LIVEKIT_URL=ws[s]://<host>[:<port>]
@@ -40,22 +48,20 @@ LIVEKIT_API_KEY=<key>
 LIVEKIT_API_SECRET=<secret>
 ```
 
-To spin up a minimal LiveKit server, install the LiveKit CLI locally from [here](https://docs.livekit.io/home/self-hosting/server-setup/#install-livekit-server).
-Then start the server with:
+#### Agent Worker
+
+Requires Python `>=3.9`. Run:
 
 ```sh
-livekit-server --dev
+pip install -e .
+python main.py [--avatar-id YOUR_AVATAR_ID]
 ```
 
-The environment variables to specify when using the development LiveKit server are the ones from the template, so no further edit of the `.env` file is required.
-
-**Note**: this configuration does not expose the server publicly, which means the client and agent will also need to run locally to connect to it.
+If no `--avatar-id` is passed, the default avatar is used.
 
 #### Client
 
-You can use any LiveKit client with video support to connect to the LiveKit server.
-
-To use a minimal LiveKit client, install `node` from [here](https://nodejs.org/en/download) if missing, then install and run the project with:
+Install [Node.js](https://nodejs.org/en/download) if missing, then:
 
 ```sh
 cd .client
@@ -63,26 +69,9 @@ npm install
 npm run dev
 ```
 
-You can then browse to <http://localhost:3000> to use the client and connect to the server to join calls.
+Visit <http://localhost:3000> to join calls and interact with the avatar agent.
 
-**Note**: Remember to specify the LiveKit environment variables in `.env` _before_ running the client.
-
-#### Agent Worker
-
-Ensure you have Python `>=3.9` installed, then install dependencies:
-
-```sh
-pip install -e .
-```
-
-Launch the agent with:
-
-```sh
-python main.py [--avatar-id YOUR_AVATAR_ID]
-```
-
-Replace `YOUR_AVATAR_ID` with a valid avatar ID if needed.
-Omitting the flag will run the agent with the default avatar.
+You can also use your own video-enabled LiveKit client.
 
 ## Documentation
 
