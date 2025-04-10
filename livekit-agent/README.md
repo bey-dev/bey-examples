@@ -17,38 +17,13 @@ It leverages voice, STT, TTS, and LLM functionalities via several LiveKit plugin
 
 ### Environment
 
-Copy `.env.template` to `.env` and add your API keys:
+Copy `.env.template` to `.env`, then provide the required values for:
 
-- **Beyond Presence**: [Creator Dashboard](https://app.bey.chat) > Settings > API Keys > Create API Key.
-- **OpenAI**: [API Keys page](https://platform.openai.com/settings/organization/api-keys).
+- **Beyond Presence**: [Creator Dashboard](https://app.bey.chat) > Settings > API Keys
+- **OpenAI**: [API Keys page](https://platform.openai.com/settings/organization/api-keys)
+- **LiveKit**: [Cloud Project page](https://cloud.livekit.io/projects) > Settings > Keys
 
-### Services
-
-This example uses:
-
-- a LiveKit server to host calls
-- a LiveKit agent worker to dispatch avatar agents
-- a LiveKit client (video-enabled) to join calls and visualize the avatar
-
-#### Server
-
-Install the [LiveKit CLI](https://docs.livekit.io/home/self-hosting/server-setup/#install-livekit-server), then run:
-
-```sh
-livekit-server --dev
-```
-
-The default `.env` values point to this local instance.
-
-To use a remote server, update `.env`:
-
-```
-LIVEKIT_URL=ws[s]://<host>[:<port>]
-LIVEKIT_API_KEY=<key>
-LIVEKIT_API_SECRET=<secret>
-```
-
-#### Agent Worker
+### Agent Worker
 
 Requires Python `>=3.9`. Run:
 
@@ -59,7 +34,7 @@ python main.py [--avatar-id YOUR_AVATAR_ID]
 
 If no `--avatar-id` is passed, the default avatar is used.
 
-#### Client
+### Client
 
 Install [Node.js](https://nodejs.org/en/download) if missing, then:
 
