@@ -10,7 +10,7 @@ It leverages voice, STT, TTS, and LLM functionalities via several LiveKit plugin
 ### Files
 
 - `pyproject.toml`: Project configuration and dependency management
-- `.env`: Environment file containing API keys and connection details
+- `.env.template`: Template dotenv file containing API keys and connection details
 - `main.py`: Main entry point that initializes and runs the agent
 
 ## Setup
@@ -21,8 +21,9 @@ Ensure you have Python `>=3.9` installed, then install dependencies:
 pip install -e .
 ```
 
-Next, update your `.env` file with the LiveKit URL and API keys.
-To generate a Beyond Presence API key, login to the [creator dashboard](https://app.bey.chat) and navigate to Settings > API Keys > Create API Key.
+Next, copy `.env.template` to `.env` and update it with your LiveKit server credentials and API keys.
+
+**Note**: To generate a Beyond Presence API key, login to the [creator dashboard](https://app.bey.chat) and navigate to Settings > API Keys > Create API Key.
 
 ## Running the Agent
 
