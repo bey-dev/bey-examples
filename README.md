@@ -6,7 +6,7 @@ Each example directory includes its own README file and setup instructions.
 
 ## 🚀 List of Examples
 
-- `bey-livekit-agent`: Minimal usage example of using the [Real-Time Audio-to-Video API](https://docs.bey.dev/integration/audio-to-video/overview) with [LiveKit Agents 1.0](https://docs.livekit.io/agents).
+- `livekit-agent`: Minimal usage example of using the [Real-Time Audio-to-Video API](https://docs.bey.dev/integration/audio-to-video/overview) with [LiveKit Agents 1.0](https://docs.livekit.io/agents).
 
 ## 🆘 Getting Help
 
