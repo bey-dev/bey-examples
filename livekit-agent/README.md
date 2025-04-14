@@ -19,9 +19,9 @@ It leverages voice, STT, TTS, and LLM functionalities via several LiveKit plugin
 
 Copy `.env.template` to `.env`, then provide the required values for:
 
-- **Beyond Presence**: [Creator Dashboard](https://app.bey.chat) > Settings > API Keys
-- **OpenAI**: [API Keys page](https://platform.openai.com/settings/organization/api-keys)
-- **LiveKit**: [Cloud Project page](https://cloud.livekit.io/projects) > Settings > Keys
+- **LiveKit Server**: [Cloud Project page](https://cloud.livekit.io/projects) > Settings > Keys
+- **Beyond Presence API**: [Creator Dashboard](https://app.bey.chat) > Settings > API Keys
+- **OpenAI API**: [API Keys page](https://platform.openai.com/settings/organization/api-keys)
 
 ### Agent Worker
 
@@ -32,21 +32,15 @@ pip install -e .
 python main.py [--avatar-id YOUR_AVATAR_ID]
 ```
 
+On start, a LiveKit worker subscribes to the server and dispatches avatar agents to handle calls.
+
 If no `--avatar-id` is passed, the default avatar is used.
 
-### Client
+#### Client
 
-Install [Node.js](https://nodejs.org/en/download) if missing, then:
+Use any LiveKit client with video support to start a call and interact with the avatar agent.
 
-```sh
-cd .client
-npm install
-npm run dev
-```
-
-Visit <http://localhost:3000> to join calls and interact with the avatar agent.
-
-You can also use your own video-enabled LiveKit client.
+For a quick start, deploy [LiveKit Meet](https://cloud.livekit.io/projects/p_/sandbox/templates/meet) and configure it with your server URL and token.
 
 ## Documentation
 
