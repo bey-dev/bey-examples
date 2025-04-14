@@ -39,7 +39,7 @@ If no `--avatar-id` is passed, the default avatar is used.
 
 Use any LiveKit client with video support to start a call and interact with the avatar agent.
 
-For a quick start, deploy [LiveKit Meet](https://cloud.livekit.io/projects/p_/sandbox/templates/meet) and configure it with your server URL and token.
+For a quick start, deploy [LiveKit Meet](https://cloud.livekit.io/projects/p_/sandbox/templates/meet) via the LiveKit Cloud template.
 
 ## Documentation
 
