@@ -1,17 +1,14 @@
 # Beyond Presence LiveKit Agent
 
-A minimal avatar agent using the Beyond Presence API (Beta).
+A minimal LiveKit avatar agent using the Beyond Presence API (Beta).
 
-## Overview
+## Requirements
 
-This beta release provides a lightweight avatar agent built on the Beyond Presence API and LiveKit.
-It leverages voice, STT, TTS, and LLM functionalities via several LiveKit plugins.
+Make sure to have an account for the following services:
 
-### Files
-
-- `pyproject.toml`: Project configuration and dependency management
-- `.env.template`: Template dotenv file containing API keys and connection details
-- `main.py`: Main entry point that initializes and runs the agent
+- [LiveKit Cloud](https://cloud.livekit.io)
+- [Beyond Presence](https://app.bey.chat)
+- [OpenAI Platform](https://platform.openai.com)
 
 ## Setup
 
@@ -20,8 +17,10 @@ It leverages voice, STT, TTS, and LLM functionalities via several LiveKit plugin
 Copy `.env.template` to `.env`, then provide the required values for:
 
 - **LiveKit Server**: [Cloud Project page](https://cloud.livekit.io/projects) > Settings > Keys
-- **Beyond Presence API**: [Creator Dashboard](https://app.bey.chat) > Settings > API Keys
+- **Beyond Presence API**: [Create and manage API keys](https://docs.bey.dev/api-key#creating-and-managing-api-keys)
 - **OpenAI API**: [API Keys page](https://platform.openai.com/settings/organization/api-keys)
+
+**Note**: The Beyond Presence avatar service requires a publicly accessible LiveKit server; local-only instances won't suffice.
 
 ### Agent Worker
 
@@ -44,4 +43,6 @@ For a quick start, deploy [LiveKit Meet](https://cloud.livekit.io/projects/p_/sa
 
 ## Documentation
 
-For detailed usage instructions and API reference, visit [our docs](https://docs.bey.dev/integration/livekit).
+- [Beyond Presence Integration & API Reference](https://docs.bey.dev/integration/livekit)
+- [LiveKit Voice Agent Quickstart](https://docs.livekit.io/agents/start/voice-ai)
+- [LiveKit React Integration Guide](https://docs.livekit.io/home/quickstarts/react)
