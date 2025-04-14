@@ -1,16 +1,17 @@
 # Beyond Presence Integration Examples
 
-This repository contains code examples for integrating with the [Beyond Presence Real-Time API](https://docs.bey.dev/integration). 
+This repository contains practical code examples for integrating with [Beyond Presence](https://www.beyondpresence.ai) products.
 
-Each example folder includes it's own README file with instructions for running the specific example.
+Each example directory includes its own README file and setup instructions.
 
 ## 🚀 List of Examples
-- `bey-livekit-agent`: Minimal usage example of using the audio-to-video API
-with LiveKit Agents 1.0. Check out our [LiveKit Integration docs](https://docs.bey.dev/integration/livekit) for more detail.
+
+- `bey-livekit-agent`: Minimal usage example of using the [Real-Time Audio-to-Video API](https://docs.bey.dev/integration/audio-to-video/overview) with [LiveKit Agents 1.0](https://docs.livekit.io/agents).
 
 ## 🆘 Getting Help
 
-Here are some options in case you need technical support:
-- Check out our [Technical Documentation](https://docs.bey.dev)
-- Join our [Slack Developer Community](https://bey.dev/community)
-- Contact Beyond Presence via [Mail](mailto:support@beyondpresence.ai)
+Need help or have questions? Here are a few ways to get assistance:
+
+- Browse the [API Technical Documentation](https://docs.bey.dev)
+- Join the [Slack Developer Community](https://bey.dev/community)
+- Email us at <support@beyondpresence.ai>
