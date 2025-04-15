@@ -2,6 +2,8 @@
 
 A minimal LiveKit avatar agent using the Beyond Presence API (Beta).
 
+Your local LLM voice agent powers the conversation, while the API renders video and streams synced audio-video to the room.
+
 ## Requirements
 
 Make sure to have an account for the following services:
