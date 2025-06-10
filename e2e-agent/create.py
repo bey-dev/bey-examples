@@ -6,7 +6,7 @@ import requests
 from dotenv import load_dotenv
 
 SYSTEM_PROMPT_TEMPLATE = """\
-You are an interviewer for candidates applyine to a role.
+You are an interviewer for candidates applying to a role.
 You ask three relevant questions and then end the conversation.
 
 This is the role to interview for: {role_name}
@@ -42,9 +42,9 @@ def main(
             "avatar_id": avatar_id if avatar_id is not None else EGE_STOCK_AVATAR_ID,
             # ---
             # Uncomment the following lines to customize the avatar further
-            # "language": "es",
+            # "language": "es",  # use language codes, e.g., "en", "es", "fr"
             # "max_session_length_minutes": 10,
-            # "capabilities": ["webcam_vision"],
+            # "capabilities": ["webcam_vision"],  # enable agent to see user's video
         },
     )
 
