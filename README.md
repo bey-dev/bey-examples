@@ -6,9 +6,9 @@ Each example directory includes its own README file and setup instructions.
 
 ## 🚀 List of Examples
 
-- `e2e-agent`: Use the [API endpoints](https://docs.bey.dev/api-reference) to create end-to-end agents and retrieve their call data.
-- `livekit-agent`: Use the [Real-Time Audio-to-Video API](https://docs.bey.dev/integration/audio-to-video/overview) with [LiveKit Agents 1.0](https://docs.livekit.io/agents).
-- `call-events-webhook`: Receive and process call events with [webhooks](https://docs.bey.dev/webhooks).
+- [`e2e-agent`](e2e-agent): Use the [API endpoints](https://docs.bey.dev/api-reference) to create end-to-end agents and retrieve their call data.
+- [`livekit-agent`](livekit-agent): Use the [Real-Time Audio-to-Video API](https://docs.bey.dev/integration/audio-to-video/overview) with [LiveKit Agents 1.0](https://docs.livekit.io/agents).
+- [`call-events-webhook`](call-events-webhook): Receive and process call events with [webhooks](https://docs.bey.dev/webhooks).
 
 ## 🆘 Getting Help
 
