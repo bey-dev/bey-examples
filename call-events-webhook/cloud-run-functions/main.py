@@ -45,16 +45,16 @@ def webhook(request: Request) -> Response:
 def handle_message(json_body: dict[str, Any]) -> Response:
     # For the most current JSON schema, visit:
     # https://docs.bey.dev/webhooks/overview#message-events
-    call_id = json_body["call_id"]
+    call_id: str = json_body["call_id"]
 
-    message = json_body["message"]
-    sender = message["sender"]
-    text = message["message"]
+    message: str = json_body["message"]
+    sender: str = message["sender"]
+    text: str = message["message"]
     sent_at = datetime.fromisoformat(message["sent_at"])
 
-    call_data = json_body["call_data"]
-    user_name = call_data["userName"]
-    agent_id = call_data["agentId"]
+    call_data: dict[str, Any] = json_body["call_data"]
+    user_name: str = call_data["userName"]
+    agent_id: str = call_data["agentId"]
 
     print(
         f"Message received - "
@@ -74,15 +74,15 @@ def handle_message(json_body: dict[str, Any]) -> Response:
 def handle_call_ended(json_body: dict[str, Any]) -> Response:
     # For the most current JSON schema, visit:
     # https://docs.bey.dev/webhooks/overview#call-ended-events
-    call_id = json_body["call_id"]
+    call_id: str = json_body["call_id"]
 
-    evaluation = json_body["evaluation"]
-    topic = evaluation["topic"]
-    user_sentiment = evaluation["user_sentiment"]
-    duration_minutes = float(evaluation["duration_minutes"])
-    messages_count = int(evaluation["messages_count"])
+    evaluation: dict[str, Any] = json_body["evaluation"]
+    topic: str = evaluation["topic"]
+    user_sentiment: str = evaluation["user_sentiment"]
+    duration_minutes: float = evaluation["duration_minutes"]
+    messages_count: int = evaluation["messages_count"]
 
-    user_name = json_body["user_name"]
+    user_name: str = json_body["user_name"]
 
     print(
         "Call ended - "
