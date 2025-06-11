@@ -43,7 +43,8 @@ def webhook(request: Request) -> Response:
 
 
 def handle_message(json_body: dict[str, Any]) -> Response:
-    # Ref: https://docs.bey.dev/webhooks/testing#testing-message-events
+    # For the most current JSON schema, visit:
+    # https://docs.bey.dev/webhooks/overview#message-events
     call_id = json_body["call_id"]
 
     message = json_body["message"]
@@ -71,7 +72,8 @@ def handle_message(json_body: dict[str, Any]) -> Response:
 
 
 def handle_call_ended(json_body: dict[str, Any]) -> Response:
-    # Ref: https://docs.bey.dev/webhooks/testing#testing-call-ended-events
+    # For the most current JSON schema, visit:
+    # https://docs.bey.dev/webhooks/overview#call-ended-events
     call_id = json_body["call_id"]
 
     evaluation = json_body["evaluation"]
