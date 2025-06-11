@@ -29,7 +29,7 @@ Copy `.env.template` to `.env`, then provide the required values for:
 Requires Python `>=3.9`. Run:
 
 ```sh
-pip install -e .
+pip install -r requirements.txt
 python main.py [--avatar-id YOUR_AVATAR_ID]
 ```
 
