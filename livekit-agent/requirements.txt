@@ -1,0 +1,4 @@
+livekit-agents == 1.0.16
+livekit-plugins-bey == 1.0.16
+livekit-plugins-openai == 1.0.16
+python-dotenv ~= 1.0
