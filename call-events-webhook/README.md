@@ -1,6 +1,8 @@
 # Beyond Presence Call Events Webhook
 
-Receive and process call events with Beyond Presence webhooks and Google Cloud Run functions.
+Receive and process call events with Beyond Presence webhooks and Google Cloud Run functions[^1].
+
+[^1]: Webhooks can also be implemented with any other cloud providers, e.g. AWS Lambda, or even hosted on-prem.
 
 ## Requirements
 
