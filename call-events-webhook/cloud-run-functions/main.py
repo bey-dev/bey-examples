@@ -3,29 +3,25 @@ from typing import Any
 
 from flask import Request, Response
 
-# We validate the webhook from the browser, so we need CORS headers
-# In the future, we will remove this requirement
-CORS_HEADER = {"Access-Control-Allow-Origin": "*"}
-
 
 def webhook(request: Request) -> Response:
+    if request.method not in {"POST", "OPTIONS"}:
+        return Response(
+            status=405,
+            response=f"Only POST requests are accepted, instead got: {request.method}",
+        )
+
+    # We validate the webhook from the browser, so we need CORS headers
+    # In the future, we will remove this requirement
     # Ref: https://cloud.google.com/functions/docs/samples/functions-http-cors#functions_http_cors-python
     if request.method == "OPTIONS":
         return Response(
             status=204,
-            headers=CORS_HEADER
-            | {
+            headers={
+                "Access-Control-Allow-Origin": "*",
                 "Access-Control-Allow-Methods": "POST",
                 "Access-Control-Allow-Headers": "Content-Type",
             },
-        )
-
-    if request.method != "POST":
-        return Response(
-            status=405,
-            response=(
-                f"Only POST requests are accepted, instead got: {request.method}"
-            ),
         )
 
     json_body = request.get_json()
@@ -33,14 +29,19 @@ def webhook(request: Request) -> Response:
     event_type = json_body["event_type"]
 
     match event_type:
+        case "test":  # sent when validating the webhook
+            return Response(
+                status=200,
+                headers={
+                    "Access-Control-Allow-Origin": "*",
+                },
+            )
         case "message":
             return handle_message(json_body)
         case "call_ended":
             return handle_call_ended(json_body)
-        case "test":  # sent when validating the webhook
-            return Response(status=200, headers=CORS_HEADER)
         case _:
-            return Response(status=400, response="Unknown event type")
+            return Response(status=400, response=f"Unknown event type: {event_type}")
 
 
 def handle_message(json_body: dict[str, Any]) -> Response:
@@ -68,7 +69,7 @@ def handle_message(json_body: dict[str, Any]) -> Response:
 
     # do something with the message, e.g. process and store it
 
-    return Response(status=200, headers=CORS_HEADER)
+    return Response(status=200)
 
 
 def handle_call_ended(json_body: dict[str, Any]) -> Response:
@@ -108,4 +109,4 @@ def handle_call_ended(json_body: dict[str, Any]) -> Response:
             f"Sent At: {sent_at}"
         )
 
-    return Response(status=200, headers=CORS_HEADER)
+    return Response(status=200)
