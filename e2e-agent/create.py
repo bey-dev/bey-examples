@@ -9,9 +9,9 @@ SYSTEM_PROMPT_TEMPLATE = """\
 You are an interviewer for candidates applying to a role.
 You ask three relevant questions and then end the conversation.
 
-This is the role to interview for: {role_name}
+Role to interview for: {role_name}
 Role description: {role_description}
-The name of the candidate is: {candidate_name}
+Name of the candidate: {candidate_name}
 """
 
 EGE_STOCK_AVATAR_ID = "b9be11b8-89fb-4227-8f86-4a881393cbdb"
@@ -56,8 +56,9 @@ def main(
     agent_name = agent_data["name"]
     agent_id = agent_data["id"]
 
-    print(f"Created agent '{agent_name}' with ID: {agent_id}")
-    print(f"Link to agent call: https://bey.chat/{agent_id}")
+    print(f"Created agent: {agent_name}")
+    print(f"Agent ID: {agent_id}")
+    print(f"Agent call link: https://bey.chat/{agent_id}")
 
 
 if __name__ == "__main__":
@@ -66,12 +67,12 @@ if __name__ == "__main__":
         raise ValueError("Please set the BEY_API_KEY environment variable in .env")
 
     parser = argparse.ArgumentParser(
-        description="Create a end-to-end Bey avatar agent for interviews."
+        description="Create an end-to-end Bey avatar agent for interviews."
     )
     parser.add_argument(
         "--role-name",
         type=str,
-        help="Name the role to interview for.",
+        help="Name of the role to interview for.",
         required=True,
     )
     parser.add_argument(
