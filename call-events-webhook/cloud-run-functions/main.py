@@ -82,7 +82,7 @@ def handle_call_ended(json_body: dict[str, Any]) -> Response:
     duration_minutes: float = evaluation["duration_minutes"]
     messages_count: int = evaluation["messages_count"]
 
-    user_name: str = json_body["user_name"]
+    user_name: str | None = json_body.get("user_name")  # missing if user didn't log in
 
     print(
         "Call ended - "
