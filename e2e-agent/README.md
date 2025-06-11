@@ -49,6 +49,9 @@ python fetch_calls.py --agent-id YOUR_AGENT_ID
 
 This prints the transcript for each call.
 
+To process agent events as they are generated, implement a webhook.
+See the [webhook example](../call-events-webhook) for reference.
+
 ## Documentation
 
 - [Beyond Presence End-to-End Integration](https://docs.bey.dev/integration/end-to-end)
