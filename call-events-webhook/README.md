@@ -32,7 +32,7 @@ The webhook processes three types of events:
 
 ## Usage
 
-Once deployed and configured, the webhook automatically receives events from Beyond Presence calls.
+Once deployed and configured, the webhook automatically receives events from Beyond Presence calls managed by your agents.
 Event data is logged to [Cloud Functions logs](https://cloud.google.com/run/docs/monitoring-overview).
 
 Customize the event handlers in `main.py` to store data, send notifications, or trigger other processes.
