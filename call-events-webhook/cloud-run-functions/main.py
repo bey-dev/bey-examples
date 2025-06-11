@@ -32,9 +32,7 @@ def webhook(request: Request) -> Response:
         case "test":  # sent when validating the webhook
             return Response(
                 status=200,
-                headers={
-                    "Access-Control-Allow-Origin": "*",
-                },
+                headers={"Access-Control-Allow-Origin": "*"},
             )
         case "message":
             return handle_message(json_body)
