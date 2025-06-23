@@ -32,8 +32,6 @@ async def entrypoint(ctx: JobContext, avatar_id: Optional[str]) -> None:
     await local_agent_session.start(
         agent=Agent(instructions="Talk to me!"),
         room=ctx.room,
-        # audio is forwarded to the avatar, so we disable room audio output
-        room_output_options=RoomOutputOptions(audio_enabled=False),
     )
 
 
