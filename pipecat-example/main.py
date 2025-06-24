@@ -16,6 +16,7 @@ from pipecat.transports.services.helpers.daily_rest import DailyRESTHelper
 from pipecat.processors.aggregators.openai_llm_context import OpenAILLMContext
 from pipecat.services.deepgram.stt import LiveOptions
 from dotenv import load_dotenv
+from integration_code import BeyVideoService
 logger = logging.getLogger(__name__)
 
 
@@ -107,7 +108,6 @@ async def main():
             ),
         )
 
-
         messages = [
             {
                 "role": "system",
@@ -125,11 +125,14 @@ async def main():
             DailyParams(
                 audio_in_enabled=True,
                 audio_out_enabled=True,
+                audio_out_sample_rate=16000,
                 video_out_enabled=True,
                 camera_out_is_live=True,
                 vad_analyzer=SileroVADAnalyzer(),
             ),
         )
+        
+        bey = BeyVideoService(client=transport._client)
 
         pipeline = Pipeline(
             [
@@ -138,6 +141,7 @@ async def main():
                 context_aggregator.user(),
                 llm,
                 tts,
+                bey,
                 transport.output(),
                 context_aggregator.assistant(),
             ],
@@ -151,23 +155,6 @@ async def main():
             ),
         )
 
-        async def capture_participant_audio(self, participant_id: str):
-            logger.info(f"Capturing participant audio: {participant_id}")
-            # Receiving from this custom track
-            # audio_source: str = "microphone"
-            audio_source: str = "stream"
-            media = {"media": {"customAudio": {audio_source: "subscribed"}}}
-            await self.update_subscriptions(
-                participant_settings={participant_id: media}
-            )
-
-            self._client.set_audio_renderer(
-                participant_id,
-                self._audio_data_received,
-                audio_source=audio_source,
-                sample_rate=self._sample_rate,
-                callback_interval_ms=20,
-            )
 
         @transport.event_handler("on_first_participant_joined")
         async def on_first_participant_joined(transport, participant):
