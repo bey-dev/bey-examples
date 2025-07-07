@@ -1,4 +1,5 @@
 import asyncio
+import logging
 from typing import Optional
 from pipecat.services.ai_service import AIService
 from pipecat.frames.frames import (
@@ -14,6 +15,7 @@ from pipecat.frames.frames import (
 from pipecat.audio.utils import create_default_resampler
 from pipecat.processors.frame_processor import FrameDirection, FrameProcessorSetup
 from pipecat.transports.services.daily import DailyTransportClient
+logger = logging.getLogger(__name__)
 
 class BeyVideoService(AIService):
     def __init__(
@@ -36,9 +38,11 @@ class BeyVideoService(AIService):
             # await self._handle_interruptions()
             await self.push_frame(frame, direction)
         elif isinstance(frame, StartFrame):
+            await self.client.start(frame)
             await self.client.register_audio_destination(self._transport_destination)
             await self.push_frame(frame, direction)
         elif isinstance(frame, TTSAudioRawFrame):
+            logger.info(f"Received TTS audio frame: {frame}")
             sample_rate = self.out_sample_rate
             # 40 ms of audio
             chunk_size = int((sample_rate * 2) / 25)

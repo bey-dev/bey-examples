@@ -72,12 +72,6 @@ async def configure_with_args(
 
 
 async def main():
-    os.environ["DAILY_SAMPLE_ROOM_URL"] = (
-            "https://beyondpresence.daily.co/lucas-test"
-        )
-    os.environ["DAILY_API_KEY"] = (
-        "11bb67b1d8ebfee0e81fb97672b7ef8bfaefcfe1719ac8d408577aae2b222e63"
-    )
     async with aiohttp.ClientSession() as session:
         (room_url, token, _) = await configure_with_args(session)
 
@@ -125,7 +119,7 @@ async def main():
             DailyParams(
                 audio_in_enabled=True,
                 audio_out_enabled=True,
-                audio_out_sample_rate=16000,
+                # audio_out_sample_rate=16000,
                 video_out_enabled=True,
                 camera_out_is_live=True,
                 vad_analyzer=SileroVADAnalyzer(),
@@ -165,6 +159,7 @@ async def main():
                     "content": "Please introduce yourself to the user.",
                 }
             )
+            await asyncio.sleep(1)
             await task.queue_frames(
                 [context_aggregator.user().get_context_frame()]
             )
