@@ -37,6 +37,8 @@ On start, a LiveKit worker subscribes to the server and dispatches avatar agents
 
 If no `--avatar-id` is passed, the default avatar is used.
 
+**Note**: LiveKit code often require the latest Python package versions to function as expected. Keeping dependencies up to date is recommended.
+
 #### Client
 
 Use any LiveKit client with video support to start a call and interact with the avatar agent.
