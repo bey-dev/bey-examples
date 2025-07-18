@@ -17,7 +17,6 @@ from pipecat.processors.aggregators.openai_llm_context import OpenAILLMContext
 from pipecat.services.deepgram.stt import LiveOptions
 from dotenv import load_dotenv
 from integration_code import BeyVideoService
-logger = logging.getLogger(__name__)
 
 
 async def configure_with_args(
@@ -120,11 +119,12 @@ async def main():
                 audio_in_enabled=True,
                 audio_out_enabled=True,
                 # audio_out_sample_rate=16000,
-                video_out_enabled=True,
-                camera_out_is_live=True,
+                # video_out_enabled=True,
+                # camera_out_is_live=True,
                 vad_analyzer=SileroVADAnalyzer(),
             ),
         )
+        await transport._client.register_audio_destination("stream")
         
         bey = BeyVideoService(client=transport._client)
 
@@ -150,9 +150,11 @@ async def main():
         )
 
 
-        @transport.event_handler("on_first_participant_joined")
+        @transport.event_handler("on_participant_joined")
         async def on_first_participant_joined(transport, participant):
             # Kick off the conversation.
+            if participant["info"]["userName"] != "Bey Video Bot":
+                return
             messages.append(
                 {
                     "role": "system",
