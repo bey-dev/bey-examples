@@ -35,7 +35,7 @@ python create.py \
 ```
 
 This creates a new agent with a custom interview prompt, then prints the agent ID and a call link.
-To embed the agent in your product, see the [Beyond Presence docs](http://docs.bey.dev/integration/end-to-end/overview#embed-your-agent).
+To embed the agent in your product, see the [Beyond Presence docs](https://docs.bey.dev/integration/end-to-end#embed-your-agent).
 
 You can optionally pass a custom `--avatar-id`.
 
