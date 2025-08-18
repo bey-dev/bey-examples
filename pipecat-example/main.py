@@ -124,7 +124,7 @@ async def main():
                 vad_analyzer=SileroVADAnalyzer(),
             ),
         )
-        await transport._client.register_audio_destination("stream")
+        
         
         bey = BeyVideoService(client=transport._client)
 
@@ -148,6 +148,7 @@ async def main():
                 enable_metrics=False,
             ),
         )
+
 
 
         @transport.event_handler("on_participant_joined")

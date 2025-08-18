@@ -11,6 +11,7 @@ from pipecat.frames.frames import (
     StartFrame,
     StartInterruptionFrame,
     TTSAudioRawFrame,
+    SpeechOutputAudioRawFrame,
 )
 from pipecat.audio.utils import create_default_resampler
 from pipecat.processors.frame_processor import FrameDirection, FrameProcessorSetup
@@ -37,6 +38,7 @@ class BeyVideoService(AIService):
             # await self._handle_interruptions()
             await self.push_frame(frame, direction)
         elif isinstance(frame, StartFrame):
+            await self.client.register_audio_destination(self._transport_destination)
             await self.push_frame(frame, direction)
         elif isinstance(frame, TTSAudioRawFrame):
             print(f"Received TTS audio frame: {frame}")
@@ -49,7 +51,7 @@ class BeyVideoService(AIService):
             resampled = await self._resampler.resample(frame.audio, frame.sample_rate, sample_rate)
             self._audio_buffer.extend(resampled)
             while len(self._audio_buffer) >= chunk_size:
-                chunk = OutputAudioRawFrame(
+                chunk = SpeechOutputAudioRawFrame(
                     bytes(self._audio_buffer[:chunk_size]),
                     sample_rate=sample_rate,
                     num_channels=frame.num_channels,
@@ -58,7 +60,7 @@ class BeyVideoService(AIService):
                 chunk.transport_destination = self._transport_destination
 
                 self._audio_buffer = self._audio_buffer[chunk_size:]
-                # await self.client.write_audio_frame(chunk)
+                await self.client.write_audio_frame(chunk)
                 await self.push_frame(chunk, direction)
         else:
             await self.push_frame(frame, direction)
