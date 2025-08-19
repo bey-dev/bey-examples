@@ -86,6 +86,7 @@ async def main():
 
         tts = OpenAITTSService(
             api_key=os.getenv("OPENAI_API_KEY"),
+            voice="ballad",
         )
         # tts = DeepgramTTSService(
         #     api_key=os.getenv("DEEPGRAM_API_KEY"),
@@ -118,7 +119,7 @@ async def main():
             DailyParams(
                 audio_in_enabled=True,
                 audio_out_enabled=True,
-                # audio_out_sample_rate=16000,
+                audio_out_sample_rate=16000,
                 # video_out_enabled=True,
                 # camera_out_is_live=True,
                 vad_analyzer=SileroVADAnalyzer(),
@@ -148,8 +149,6 @@ async def main():
                 enable_metrics=False,
             ),
         )
-
-
 
         @transport.event_handler("on_participant_joined")
         async def on_first_participant_joined(transport, participant):
