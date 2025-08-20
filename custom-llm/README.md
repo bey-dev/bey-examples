@@ -22,6 +22,8 @@ Requires Python 3.8 or higher. Install dependencies with:
 pip install -r requirements.txt
 ```
 
+Note: While this example use Python, the integration is simply HTTP calls to our API and can be implemented in any language or framework (curl, TypeScript, etc.).
+
 ## Usage
 
 ### Deploy LLM API (Optional)
