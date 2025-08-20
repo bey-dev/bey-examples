@@ -33,7 +33,7 @@ def main(
         f"{BEY_API_URL}/agent",
         headers={"x-api-key": bey_api_key},
         json={
-            "name": f"Demo Agent for Custom LLM {llm_api_name}",
+            "name": f"Demo Agent for custom LLM '{llm_api_name}'",
             "avatar_id": "b5bebaf9-ae80-4e43-b97f-4506136ed926",  # Nelly from https://docs.bey.dev/avatars/default
             "system_prompt": "You are a helpful assistant.",
             "greeting": "Hello! How can I help you today?",
