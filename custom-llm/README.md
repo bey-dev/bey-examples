@@ -28,8 +28,9 @@ Note: While this example use Python, the integration is simply HTTP calls to our
 
 ### Deploy LLM API (Optional)
 
-The `deploy-tgi-cloud-run` script is optional.
-Use it to deploy a [Text Generation Inference](https://huggingface.co/docs/text-generation-inference) service on Google Cloud Run if you don't have an existing OpenAI-compatible LLM API endpoint:
+**If you already have an OpenAI-compatible LLM API endpoint, skip to the next step.**
+
+Otherwise, use the `deploy-tgi-cloud-run` script to deploy a [Text Generation Inference](https://huggingface.co/docs/text-generation-inference) service on Google Cloud Run:
 
 ```sh
 ./deploy-tgi-cloud-run
@@ -48,8 +49,6 @@ curl -X POST 'https://your-llm-api.com/v1/chat/completions' \
   -H 'Content-Type: application/json' \
   -d '{"messages":[{"role":"user","content":"Wake up!"}]}'
 ```
-
-If you already have an OpenAI-compatible LLM API endpoint, skip to the next step.
 
 ### Configure LLM API
 
