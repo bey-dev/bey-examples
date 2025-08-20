@@ -35,10 +35,10 @@ Use it to deploy a [Text Generation Inference](https://huggingface.co/docs/text-
 ./deploy-tgi-cloud-run
 ```
 
-This will prompt you for an API key and deploy the service.
-The included model is small and basic, chosen for quick deployment to demonstrate the integration flow.
+This will prompt you for an API key and deploy the service using [Qwen/Qwen2.5-0.5B-Instruct](https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct) - a small model chosen for quick deployment.
+Deployment takes around 10 minutes, so grab a coffee while it runs.
 
-Grab a coffee while it runs - deployment takes around 10 minutes.
+To use larger models, modify `tgi-docker/Dockerfile` and consider increasing the deploy timeout in `deploy-tgi-cloud-run` as build times will be longer.
 
 Once deployed, consider sending a `curl` request to warm up the endpoint and spin up the Cloud Run instance before testing your agent:
 
