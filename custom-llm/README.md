@@ -38,6 +38,15 @@ The included model is small and basic, chosen for quick deployment to demonstrat
 
 Grab a coffee while it runs - deployment takes around 10 minutes.
 
+Once deployed, consider sending a `curl` request to warm up the endpoint and spin up the Cloud Run instance before testing your agent:
+
+```sh
+curl -X POST 'https://your-llm-api.com/v1/chat/completions' \
+  -H 'Authorization: Bearer your-api-key' \
+  -H 'Content-Type: application/json' \
+  -d '{"messages":[{"role":"user","content":"Wake up!"}]}'
+```
+
 If you already have an OpenAI-compatible LLM API endpoint, skip to the next step.
 
 ### Configure LLM API
