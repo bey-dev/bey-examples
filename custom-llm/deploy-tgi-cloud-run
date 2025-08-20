@@ -1,0 +1,51 @@
+#!/bin/bash
+
+set -eu
+
+root="$(dirname "$(realpath "$0")")"
+
+echo 'Retrieving user default region for Cloud Run...'
+region=$(gcloud config get-value run/region)
+if [[ -n "$region" ]]; then
+  echo "Found region $region"
+else
+  region='us-central1'
+  echo "Will default to region $region."
+fi
+
+echo
+echo 'Come up with an API key for the TGI service to deploy.'
+read -p 'Value: ' api_key
+if [[ -z "$api_key" ]]; then
+  >&2 echo 'API key cannot be empty!'
+  exit 1
+fi
+
+service_name='text-generation-inference'
+gcloud run deploy "$service_name" \
+  --source "$root/tgi-docker" \
+  --env-vars-file <(echo "API_KEY: $api_key") \
+  --region "$region" \
+  --cpu 4 \
+  --memory 16Gi \
+  --gpu-type nvidia-l4 \
+  --gpu 1 \
+  --timeout=600 \
+  --max-instances 1 \
+  --allow-unauthenticated \
+  --no-cpu-throttling \
+  --no-gpu-zonal-redundancy
+
+echo
+echo 'Text Generation Inference service deployed successfully!'
+
+url=$(
+  gcloud run services describe "$service_name" \
+    --region "$region" \
+    --format 'value(status.url)'
+)
+
+echo
+echo 'API Configuration'
+echo "Url: $url/v1"
+echo "Key: $api_key"
