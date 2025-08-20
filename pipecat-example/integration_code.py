@@ -43,10 +43,7 @@ class BeyVideoService(AIService):
         elif isinstance(frame, TTSAudioRawFrame):
             print(f"Received TTS audio frame: {frame}")
             sample_rate = self.out_sample_rate
-            # 40 ms of audio
-            chunk_size = 16000 # int((sample_rate * 2) / 25)
-            # We might need to resample if incoming audio doesn't match the
-            # transport sample rate.
+            chunk_size = int((sample_rate * 2) / 25)
 
             resampled = await self._resampler.resample(frame.audio, frame.sample_rate, sample_rate)
             self._audio_buffer.extend(resampled)

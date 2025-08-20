@@ -11,6 +11,7 @@ from pipecat.services.openai.tts import OpenAITTSService
 from pipecat.transports.services.daily import DailyParams, DailyTransport
 from pipecat.audio.vad.silero import SileroVADAnalyzer
 from pipecat.services.deepgram.stt import DeepgramSTTService
+from pipecat.services.deepgram.tts import DeepgramTTSService
 from pipecat.services.azure.llm import AzureLLMService
 from pipecat.transports.services.helpers.daily_rest import DailyRESTHelper
 from pipecat.processors.aggregators.openai_llm_context import OpenAILLMContext
@@ -84,13 +85,13 @@ async def main():
             api_version=os.getenv("AZ_API_VERSION", "2024-10-01-preview"),
         )
 
-        tts = OpenAITTSService(
-            api_key=os.getenv("OPENAI_API_KEY"),
-            voice="ballad",
-        )
-        # tts = DeepgramTTSService(
-        #     api_key=os.getenv("DEEPGRAM_API_KEY"),
+        # tts = OpenAITTSService(
+        #     api_key=os.getenv("OPENAI_API_KEY"),
+        #     voice="ballad",
         # )
+        tts = DeepgramTTSService(
+            api_key=os.getenv("DEEPGRAM_API_KEY"),
+        )
 
         stt = DeepgramSTTService(
             api_key=os.getenv("DEEPGRAM_API_KEY"),
@@ -150,18 +151,18 @@ async def main():
             ),
         )
 
-        @transport.event_handler("on_participant_joined")
-        async def on_first_participant_joined(transport, participant):
+        @transport.event_handler("on_client_connected")
+        async def on_client_connected(transport, client):
             # Kick off the conversation.
-            if participant["info"]["userName"] != "Bey Video Bot":
-                return
+            # if participant["info"]["userName"] != "Bey Video Bot":
+            #     return
             messages.append(
                 {
                     "role": "system",
                     "content": "Please introduce yourself to the user.",
                 }
             )
-            await asyncio.sleep(1)
+
             await task.queue_frames(
                 [context_aggregator.user().get_context_frame()]
             )
