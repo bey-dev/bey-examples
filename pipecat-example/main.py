@@ -119,10 +119,11 @@ async def main():
             "Bey example Bot",
             DailyParams(
                 audio_in_enabled=True,
-                audio_out_enabled=True,
-                audio_out_sample_rate=16000,
-                # video_out_enabled=True,
-                # camera_out_is_live=True,
+                audio_out_enabled=False,
+                video_out_enabled=False,
+                video_out_is_live=False,
+                microphone_out_enabled=False,
+                # audio_out_destinations=["stream"],
                 vad_analyzer=SileroVADAnalyzer(),
             ),
         )
@@ -142,20 +143,24 @@ async def main():
                 context_aggregator.assistant(),
             ],
         )
+       
 
         task = PipelineTask(
             pipeline,
             params=PipelineParams(
-                allow_interruptions=True,
-                enable_metrics=False,
+                audio_in_sample_rate=16000,
+                audio_out_sample_rate=16000,
             ),
         )
 
-        @transport.event_handler("on_client_connected")
-        async def on_client_connected(transport, client):
+        @transport.event_handler("on_participant_joined")
+        async def on_participant_joined(transport, participant):
             # Kick off the conversation.
-            # if participant["info"]["userName"] != "Bey Video Bot":
-            #     return
+            if participant["info"]["userName"] == "Bey Video Bot":
+                print("Bey Video Bot has joined the call.")
+                await transport.update_subscriptions(participant_settings={participant["id"]: {"media": {"microphone": "unsubscribed"}}})
+                
+                return
             messages.append(
                 {
                     "role": "system",

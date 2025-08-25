@@ -13,7 +13,7 @@ from pipecat.frames.frames import (
     TTSAudioRawFrame,
     SpeechOutputAudioRawFrame,
 )
-from pipecat.audio.utils import create_default_resampler
+from pipecat.audio.utils import create_stream_resampler
 from pipecat.processors.frame_processor import FrameDirection, FrameProcessorSetup
 from pipecat.transports.services.daily import DailyTransportClient
 
@@ -24,7 +24,7 @@ class BeyVideoService(AIService):
         **kwargs,
     ) -> None:
         super().__init__(**kwargs)
-        self._resampler = create_default_resampler()
+        self._resampler = create_stream_resampler()
         self._queue = asyncio.Queue()
         self.out_sample_rate=16000
         self._audio_buffer = bytearray()
@@ -41,16 +41,15 @@ class BeyVideoService(AIService):
             await self.client.register_audio_destination(self._transport_destination)
             await self.push_frame(frame, direction)
         elif isinstance(frame, TTSAudioRawFrame):
-            print(f"Received TTS audio frame: {frame}")
-            sample_rate = self.out_sample_rate
-            chunk_size = int((sample_rate * 2) / 25)
+            in_sample_rate = frame.sample_rate
+            chunk_size = int((self.out_sample_rate * 2) / 25)
 
-            resampled = await self._resampler.resample(frame.audio, frame.sample_rate, sample_rate)
+            resampled = await self._resampler.resample(frame.audio, in_sample_rate, self.out_sample_rate)
             self._audio_buffer.extend(resampled)
             while len(self._audio_buffer) >= chunk_size:
                 chunk = SpeechOutputAudioRawFrame(
                     bytes(self._audio_buffer[:chunk_size]),
-                    sample_rate=sample_rate,
+                    sample_rate=self.out_sample_rate,
                     num_channels=frame.num_channels,
                 )
                 
@@ -58,7 +57,7 @@ class BeyVideoService(AIService):
 
                 self._audio_buffer = self._audio_buffer[chunk_size:]
                 await self.client.write_audio_frame(chunk)
-                await self.push_frame(chunk, direction)
+                # await self.push_frame(chunk, direction)
         else:
             await self.push_frame(frame, direction)
             
