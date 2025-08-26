@@ -1,1 +1,1 @@
-pipecat-ai[azure,daily,openai,silero,deepgram]
+pipecat-ai[daily,openai,silero,deepgram]

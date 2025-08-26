@@ -31,7 +31,7 @@ class BeyVideoService(AIService):
         self.out_sample_rate = 16000
         self._audio_buffer = bytearray()
         self.client = client
-        self._transport_destination: str = "stream"
+        self._transport_destination: str = "bey-custom-track"
         
     async def process_frame(self, frame: Frame, direction: FrameDirection):
         await super().process_frame(frame, direction)
