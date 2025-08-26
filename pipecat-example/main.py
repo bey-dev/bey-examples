@@ -1,18 +1,16 @@
 import argparse
 import asyncio
-import logging
 import os
 from typing import Optional
 import aiohttp
 from pipecat.pipeline.runner import PipelineRunner
 from pipecat.pipeline.task import PipelineTask, PipelineParams
 from pipecat.pipeline.pipeline import Pipeline
-from pipecat.services.openai.tts import OpenAITTSService
+from pipecat.services.openai.llm import OpenAILLMService
 from pipecat.transports.services.daily import DailyParams, DailyTransport
 from pipecat.audio.vad.silero import SileroVADAnalyzer
 from pipecat.services.deepgram.stt import DeepgramSTTService
 from pipecat.services.deepgram.tts import DeepgramTTSService
-from pipecat.services.azure.llm import AzureLLMService
 from pipecat.transports.services.helpers.daily_rest import DailyRESTHelper
 from pipecat.processors.aggregators.openai_llm_context import OpenAILLMContext
 from pipecat.services.deepgram.stt import LiveOptions
@@ -75,24 +73,6 @@ async def main():
     async with aiohttp.ClientSession() as session:
         (room_url, token, _) = await configure_with_args(session)
 
-        # llm = OpenAILLMService(
-        #     api_key=os.getenv("OPENAI_API_KEY"), model="gpt-4o-mini"
-        # )
-        llm = AzureLLMService(
-            api_key=os.getenv("AZ_OPENAI_API_KEY"),
-            endpoint=os.getenv("AZ_ENDPOINT"),
-            model=os.getenv("AZ_DEPLOYMENT", "gpt-4o"),
-            api_version=os.getenv("AZ_API_VERSION", "2024-10-01-preview"),
-        )
-
-        # tts = OpenAITTSService(
-        #     api_key=os.getenv("OPENAI_API_KEY"),
-        #     voice="ballad",
-        # )
-        tts = DeepgramTTSService(
-            api_key=os.getenv("DEEPGRAM_API_KEY"),
-        )
-
         stt = DeepgramSTTService(
             api_key=os.getenv("DEEPGRAM_API_KEY"),
             live_options=LiveOptions(
@@ -101,6 +81,14 @@ async def main():
                 smart_format=True,
                 vad_events=True,
             ),
+        )
+
+        llm = OpenAILLMService(
+            api_key=os.getenv("OPENAI_API_KEY"), model="gpt-4o-mini"
+        )
+
+        tts = DeepgramTTSService(
+            api_key=os.getenv("DEEPGRAM_API_KEY"),
         )
 
         messages = [
@@ -119,11 +107,9 @@ async def main():
             "Bey example Bot",
             DailyParams(
                 audio_in_enabled=True,
-                audio_out_enabled=False,
                 video_out_enabled=False,
                 video_out_is_live=False,
                 microphone_out_enabled=False,
-                # audio_out_destinations=["stream"],
                 vad_analyzer=SileroVADAnalyzer(),
             ),
         )
@@ -148,7 +134,6 @@ async def main():
         task = PipelineTask(
             pipeline,
             params=PipelineParams(
-                audio_in_sample_rate=16000,
                 audio_out_sample_rate=16000,
             ),
         )
@@ -157,10 +142,9 @@ async def main():
         async def on_participant_joined(transport, participant):
             # Kick off the conversation.
             if participant["info"]["userName"] == "Bey Video Bot":
-                print("Bey Video Bot has joined the call.")
                 await transport.update_subscriptions(participant_settings={participant["id"]: {"media": {"microphone": "unsubscribed"}}})
-                
                 return
+
             messages.append(
                 {
                     "role": "system",
