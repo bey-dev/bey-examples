@@ -129,7 +129,6 @@ async def main():
                 context_aggregator.assistant(),
             ],
         )
-       
 
         task = PipelineTask(
             pipeline,
