@@ -59,7 +59,6 @@ class BeyVideoService(AIService):
                 "pipecat_url": room_url,
                 "pipecat_token": token,
             },
-            timeout=aiohttp.ClientTimeout(sock_connect=self._conn_options.timeout),
         ) as response:
             if not response.ok:
                 text = await response.text()
@@ -72,7 +71,7 @@ class BeyVideoService(AIService):
         await super().process_frame(frame, direction)
 
         if isinstance(frame, StartFrame):
-            await self._start(room_url=self._client.room_url, token=self._client.token)
+            await self._start(room_url=self._client.room_url, token=self._client._token)
             await self._client.register_audio_destination(self._transport_destination)
             await self.push_frame(frame, direction)
         elif isinstance(frame, TTSAudioRawFrame):
@@ -91,7 +90,7 @@ class BeyVideoService(AIService):
                 chunk.transport_destination = self._transport_destination
 
                 self._audio_buffer = self._audio_buffer[chunk_size:]
-                await self.client.write_audio_frame(chunk)
+                await self._client.write_audio_frame(chunk)
         else:
             await self.push_frame(frame, direction)
             

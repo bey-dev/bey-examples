@@ -69,7 +69,7 @@ async def configure_with_args(
     return (url, token, args)
 
 
-async def main():
+async def main(avatar_id: str | None = None) -> None:
     async with aiohttp.ClientSession() as session:
         (room_url, token, _) = await configure_with_args(session)
 
@@ -115,7 +115,7 @@ async def main():
         )
         
         
-        bey = BeyVideoService(client=transport._client)
+        bey = BeyVideoService(client=transport._client, avatar_id=avatar_id)
 
         pipeline = Pipeline(
             [
@@ -164,4 +164,7 @@ async def main():
 
 if __name__ == "__main__":
     load_dotenv()
-    asyncio.run(main())
+    parser = argparse.ArgumentParser(description="Run a LiveKit agent with Bey avatar.")
+    parser.add_argument("--avatar-id", type=str, help="Avatar ID to use.")
+    args = parser.parse_args()
+    asyncio.run(main(avatar_id=args.avatar_id))
