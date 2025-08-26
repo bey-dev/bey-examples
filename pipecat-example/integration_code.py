@@ -17,6 +17,8 @@ from pipecat.audio.utils import create_stream_resampler
 from pipecat.processors.frame_processor import FrameDirection, FrameProcessorSetup
 from pipecat.transports.services.daily import DailyTransportClient
 
+FRAME_RATE = 25
+
 class BeyVideoService(AIService):
     def __init__(
         self,
@@ -26,7 +28,7 @@ class BeyVideoService(AIService):
         super().__init__(**kwargs)
         self._resampler = create_stream_resampler()
         self._queue = asyncio.Queue()
-        self.out_sample_rate=16000
+        self.out_sample_rate = 16000
         self._audio_buffer = bytearray()
         self.client = client
         self._transport_destination: str = "stream"
@@ -34,15 +36,12 @@ class BeyVideoService(AIService):
     async def process_frame(self, frame: Frame, direction: FrameDirection):
         await super().process_frame(frame, direction)
 
-        if isinstance(frame, StartInterruptionFrame):
-            # await self._handle_interruptions()
-            await self.push_frame(frame, direction)
-        elif isinstance(frame, StartFrame):
+        if isinstance(frame, StartFrame):
             await self.client.register_audio_destination(self._transport_destination)
             await self.push_frame(frame, direction)
         elif isinstance(frame, TTSAudioRawFrame):
             in_sample_rate = frame.sample_rate
-            chunk_size = int((self.out_sample_rate * 2) / 25)
+            chunk_size = int((self.out_sample_rate * 2) / FRAME_RATE)
 
             resampled = await self._resampler.resample(frame.audio, in_sample_rate, self.out_sample_rate)
             self._audio_buffer.extend(resampled)
@@ -57,7 +56,6 @@ class BeyVideoService(AIService):
 
                 self._audio_buffer = self._audio_buffer[chunk_size:]
                 await self.client.write_audio_frame(chunk)
-                # await self.push_frame(chunk, direction)
         else:
             await self.push_frame(frame, direction)
             
