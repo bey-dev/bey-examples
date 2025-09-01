@@ -1,22 +1,17 @@
 import asyncio
-import logging
 import os
-from typing import Optional
 import aiohttp
 from pipecat.services.ai_service import AIService
 from pipecat.frames.frames import (
-    CancelFrame,
-    EndFrame,
+    BotStartedSpeakingFrame,
     Frame,
-    OutputAudioRawFrame,
-    OutputImageRawFrame,
     StartFrame,
-    StartInterruptionFrame,
     TTSAudioRawFrame,
+    TTSStartedFrame,
     SpeechOutputAudioRawFrame,
 )
 from pipecat.audio.utils import create_stream_resampler
-from pipecat.processors.frame_processor import FrameDirection, FrameProcessorSetup
+from pipecat.processors.frame_processor import FrameDirection
 from pipecat.transports.services.daily import DailyTransportClient
 
 FRAME_RATE = 25
@@ -91,6 +86,21 @@ class BeyVideoService(AIService):
 
                 self._audio_buffer = self._audio_buffer[chunk_size:]
                 await self._client.write_audio_frame(chunk)
+        elif isinstance(frame, TTSStartedFrame):
+            await self.start_ttfb_metrics()
+        elif isinstance(frame, BotStartedSpeakingFrame):
+            # We constantly receive audio through WebRTC, but most of the time it is silence.
+            # As soon as we receive actual audio, the base output transport will create a
+            # BotStartedSpeakingFrame, which we can use as a signal for the TTFB metrics.
+            await self.stop_ttfb_metrics()
         else:
             await self.push_frame(frame, direction)
+            
+    def can_generate_metrics(self) -> bool:
+        """Check if the service can generate metrics.
+
+        Returns:
+            True if metrics generation is supported.
+        """
+        return True
             
