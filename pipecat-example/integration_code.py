@@ -9,6 +9,8 @@ from pipecat.frames.frames import (
     TTSAudioRawFrame,
     TTSStartedFrame,
     SpeechOutputAudioRawFrame,
+    StartInterruptionFrame,
+    TransportMessageFrame,
 )
 from pipecat.audio.utils import create_stream_resampler
 from pipecat.processors.frame_processor import FrameDirection
@@ -69,6 +71,10 @@ class BeyVideoService(AIService):
             await self._start(room_url=self._client.room_url, token=self._client._token)
             await self._client.register_audio_destination(self._transport_destination)
             await self.push_frame(frame, direction)
+        elif isinstance(frame, StartInterruptionFrame):
+            frame.transport_destination = self._transport_destination
+            transport_frame = TransportMessageFrame(message="interrupt")
+            await self._client.send_message(transport_frame)
         elif isinstance(frame, TTSAudioRawFrame):
             in_sample_rate = frame.sample_rate
             chunk_size = int((self._out_sample_rate * 2) / FRAME_RATE)
