@@ -88,7 +88,7 @@ async def main(avatar_id: str | None = None) -> None:
         )
 
         tts = DeepgramTTSService(
-            api_key=os.getenv("DEEPGRAM_API_KEY"),
+            api_key=os.getenv("DEEPGRAM_API_KEY"), voice="aura-2-arcas-en"
         )
 
         messages = [
