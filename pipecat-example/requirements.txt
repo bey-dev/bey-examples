@@ -1,1 +1,2 @@
 pipecat-ai[daily,openai,silero,deepgram]
+python-dotenv

@@ -41,12 +41,12 @@ async def configure_with_args(
 
     args, unknown = parser.parse_known_args()
 
-    url = args.url or os.getenv("DAILY_SAMPLE_ROOM_URL")
+    url = args.url or os.getenv("DAILY_ROOM_URL")
     key = args.apikey or os.getenv("DAILY_API_KEY")
 
     if not url:
         raise Exception(
-            "No Daily room specified. use the -u/--url option from the command line, or set DAILY_SAMPLE_ROOM_URL in your environment to specify a Daily room URL."
+            "No Daily room specified. use the -u/--url option from the command line, or set DAILY_ROOM_URL in your environment to specify a Daily room URL."
         )
 
     if not key:

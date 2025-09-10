@@ -19,8 +19,8 @@ Make sure to have an account for the following services:
 Copy `.env.template` to `.env`, then provide the required values for:
 
 - **DAILY_ROOM_URL & DAILY_API_KEY**: [Room page](https://dashboard.daily.co/rooms)
-- **Beyond Presence API**: [Create and manage API keys](https://docs.bey.dev/api-key#creating-and-managing-api-keys)
-- **OpenAI API**: [API Keys page](https://platform.openai.com/settings/organization/api-keys)
+- **BEY_API_URL & BEY_API_KEY**: [Create and manage API keys](https://docs.bey.dev/api-key#creating-and-managing-api-keys)
+- **OPENAI_API_KEY**: [API Keys page](https://platform.openai.com/settings/organization/api-keys)
 
 ### Agent Worker
 
