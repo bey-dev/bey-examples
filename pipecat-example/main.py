@@ -166,7 +166,7 @@ async def main(avatar_id: str | None = None) -> None:
 
 if __name__ == "__main__":
     load_dotenv()
-    parser = argparse.ArgumentParser(description="Run a LiveKit agent with Bey avatar.")
+    parser = argparse.ArgumentParser(description="Run a Pipecat agent with Bey avatar.")
     parser.add_argument("--avatar-id", type=str, help="Avatar ID to use.")
     args = parser.parse_args()
     asyncio.run(main(avatar_id=args.avatar_id))
