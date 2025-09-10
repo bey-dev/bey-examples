@@ -17,14 +17,14 @@ from pipecat.processors.frame_processor import FrameDirection
 from pipecat.transports.services.daily import DailyTransportClient
 
 FRAME_RATE = 25
-EGE_STOCK_AVATAR_ID = "b9be11b8-89fb-4227-8f86-4a881393cbdb"
+_EGE_STOCK_AVATAR_ID = "b9be11b8-89fb-4227-8f86-4a881393cbdb"
 _DEFAULT_API_URL = "https://api.bey.dev"
 
 class BeyVideoService(AIService):
     def __init__(
         self,
         client: DailyTransportClient,
-        avatar_id: str = EGE_STOCK_AVATAR_ID,
+        avatar_id: str = _EGE_STOCK_AVATAR_ID,
         **kwargs,
     ) -> None:
         super().__init__(**kwargs)
@@ -37,7 +37,7 @@ class BeyVideoService(AIService):
         self._http_session: aiohttp.ClientSession | None = None
         self._avatar_id = avatar_id
         self._api_url = os.getenv("BEY_API_URL", _DEFAULT_API_URL)
-        self._api_key = os.getenv("BEY_API_KEY")
+        self._api_key = os.getenv("BEY_API_KEY", _EGE_STOCK_AVATAR_ID)
 
     def _ensure_http_session(self) -> aiohttp.ClientSession:
         if self._http_session is None:
