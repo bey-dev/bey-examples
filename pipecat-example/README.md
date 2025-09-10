@@ -8,7 +8,7 @@ Your local agent powers the conversation, while the API renders video and stream
 
 Make sure to have an account for the following services:
 
-- [Daily ](https://www.daily.co)
+- [Daily ](https://www.daily.co) (Choose "Daily Video")
 - [Beyond Presence](https://app.bey.chat)
 - [OpenAI Platform](https://platform.openai.com)
 
@@ -30,8 +30,6 @@ Requires Python `>=3.9`. Run:
 pip install -r requirements.txt
 python main.py [--avatar-id YOUR_AVATAR_ID]
 ```
-
-On start, a LiveKit worker subscribes to the server and dispatches avatar agents to handle calls.
 
 If no `--avatar-id` is passed, the default avatar is used.
 
