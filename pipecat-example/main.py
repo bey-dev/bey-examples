@@ -7,6 +7,7 @@ from pipecat.pipeline.runner import PipelineRunner
 from pipecat.pipeline.task import PipelineTask, PipelineParams
 from pipecat.pipeline.pipeline import Pipeline
 from pipecat.services.openai.llm import OpenAILLMService
+from pipecat.services.openai.tts import OpenAITTSService
 from pipecat.transports.services.daily import DailyParams, DailyTransport
 from pipecat.audio.vad.silero import SileroVADAnalyzer
 from pipecat.services.deepgram.stt import DeepgramSTTService
@@ -86,9 +87,9 @@ async def main(avatar_id: str | None = None) -> None:
         llm = OpenAILLMService(
             api_key=os.getenv("OPENAI_API_KEY"), model="gpt-4o-mini"
         )
-
-        tts = DeepgramTTSService(
-            api_key=os.getenv("DEEPGRAM_API_KEY"), voice="aura-2-arcas-en"
+        
+        tts = OpenAITTSService(
+            api_key=os.getenv("OPENAI_API_KEY")
         )
 
         messages = [
@@ -133,7 +134,6 @@ async def main(avatar_id: str | None = None) -> None:
         task = PipelineTask(
             pipeline,
             params=PipelineParams(
-                audio_out_sample_rate=16000,
                 enable_metrics=True,
                 enable_usage_metrics=True,
             ),
