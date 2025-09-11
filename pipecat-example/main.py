@@ -12,7 +12,7 @@ from pipecat.transports.services.daily import DailyParams, DailyTransport
 from pipecat.audio.vad.silero import SileroVADAnalyzer
 from pipecat.services.deepgram.stt import DeepgramSTTService
 from pipecat.services.deepgram.tts import DeepgramTTSService
-from pipecat.transports.services.helpers.daily_rest import DailyRESTHelper
+from pipecat.transports.services.helpers.daily_rest import DailyRESTHelper, DailyMeetingTokenParams, DailyMeetingTokenProperties
 from pipecat.processors.aggregators.openai_llm_context import OpenAILLMContext
 from pipecat.services.deepgram.stt import LiveOptions
 from dotenv import load_dotenv
@@ -21,6 +21,7 @@ from integration_code import BeyVideoService
 
 async def configure_with_args(
     aiohttp_session: aiohttp.ClientSession,
+    bot_name: str,
     parser: Optional[argparse.ArgumentParser] = None,
 ):
     if not parser:
@@ -65,14 +66,21 @@ async def configure_with_args(
     # the future.
     expiry_time: float = 60 * 60
 
-    token = await daily_rest_helper.get_token(url, expiry_time)
+
+    params = DailyMeetingTokenParams(
+        properties=DailyMeetingTokenProperties(
+            user_name=bot_name,
+        )
+    )
+    token = await daily_rest_helper.get_token(url, expiry_time, params=params)
 
     return (url, token, args)
 
 
 async def main(avatar_id: str | None = None) -> None:
     async with aiohttp.ClientSession() as session:
-        (room_url, token, _) = await configure_with_args(session)
+        bot_name = "Bey Video Bot"
+        (room_url, token, _) = await configure_with_args(aiohttp_session=session, bot_name=bot_name)
 
         stt = DeepgramSTTService(
             api_key=os.getenv("DEEPGRAM_API_KEY"),
@@ -142,7 +150,7 @@ async def main(avatar_id: str | None = None) -> None:
         @transport.event_handler("on_participant_joined")
         async def on_participant_joined(transport, participant):
             # Kick off the conversation.
-            if participant["info"]["userName"] == "Bey Video Bot":
+            if participant["info"]["userName"] == bot_name:
                 await transport.update_subscriptions(participant_settings={participant["id"]: {"media": {"microphone": "unsubscribed"}}})
                 return
 
