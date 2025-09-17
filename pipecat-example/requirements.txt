@@ -1,2 +1,2 @@
-pipecat-ai[daily,openai,silero,deepgram]
-python-dotenv
+pipecat-ai[azure,daily,deepgram,openai,silero]==0.0.84
+python-dotenv==1.1.1

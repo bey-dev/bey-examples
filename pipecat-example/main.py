@@ -1,120 +1,109 @@
-import argparse
 import asyncio
 import os
-from typing import Optional
+from typing import Any
+
 import aiohttp
+from dotenv import load_dotenv
+from pipecat.audio.vad.silero import SileroVADAnalyzer
+from pipecat.pipeline.pipeline import Pipeline
 from pipecat.pipeline.runner import PipelineRunner
 from pipecat.pipeline.task import PipelineTask, PipelineParams
-from pipecat.pipeline.pipeline import Pipeline
-from pipecat.services.openai.llm import OpenAILLMService
-from pipecat.services.openai.tts import OpenAITTSService
-from pipecat.transports.services.daily import DailyParams, DailyTransport
-from pipecat.audio.vad.silero import SileroVADAnalyzer
-from pipecat.services.deepgram.stt import DeepgramSTTService
-from pipecat.services.deepgram.tts import DeepgramTTSService
-from pipecat.transports.services.helpers.daily_rest import DailyRESTHelper, DailyMeetingTokenParams, DailyMeetingTokenProperties
 from pipecat.processors.aggregators.openai_llm_context import OpenAILLMContext
-from pipecat.services.deepgram.stt import LiveOptions
-from dotenv import load_dotenv
-from integration_code import BeyVideoService
+from pipecat.services.openai.llm import OpenAILLMService
+from pipecat.services.openai.stt import OpenAISTTService
+from pipecat.services.openai.tts import OpenAITTSService
+from pipecat.transports.daily.transport import DailyParams, DailyTransport
+from pipecat.transports.daily.utils import (
+    DailyRESTHelper,
+    DailyMeetingTokenParams,
+    DailyMeetingTokenProperties,
+)
+
+from bey_video import BeyVideoService
 
 
-async def configure_with_args(
-    aiohttp_session: aiohttp.ClientSession,
-    bot_name: str,
-    parser: Optional[argparse.ArgumentParser] = None,
-):
-    if not parser:
-        parser = argparse.ArgumentParser(description="Daily AI SDK Bot Sample")
-    parser.add_argument(
-        "-u",
-        "--url",
-        type=str,
-        required=False,
-        help="URL of the Daily room to join",
-    )
-    parser.add_argument(
-        "-k",
-        "--apikey",
-        type=str,
-        required=False,
-        help="Daily API Key (needed to create an owner token for the room)",
-    )
+# Ege stock avatar
+# Ref: https://docs.bey.dev/get-started/avatars/default
+AVATAR_ID = "b9be11b8-89fb-4227-8f86-4a881393cbdb"
 
-    args, unknown = parser.parse_known_args()
-
-    url = args.url or os.getenv("DAILY_ROOM_URL")
-    key = args.apikey or os.getenv("DAILY_API_KEY")
-
-    if not url:
-        raise Exception(
-            "No Daily room specified. use the -u/--url option from the command line, or set DAILY_ROOM_URL in your environment to specify a Daily room URL."
-        )
-
-    if not key:
-        raise Exception(
-            "No Daily API key specified. use the -k/--apikey option from the command line, or set DAILY_API_KEY in your environment to specify a Daily API key, available from https://dashboard.daily.co/developers."
-        )
-
-    daily_rest_helper = DailyRESTHelper(
-        daily_api_key=key,
-        daily_api_url=os.getenv("DAILY_API_URL", "https://api.daily.co/v1"),
-        aiohttp_session=aiohttp_session,
-    )
-
-    # Create a meeting token for the given room with an expiration 1 hour in
-    # the future.
-    expiry_time: float = 60 * 60
+SYSTEM_PROMPT = (
+    "You are Chatbot, a friendly, helpful robot. Your goal is to demonstrate your "
+    "capabilities in a succinct way. Your output will be converted to audio so don't "
+    "include special characters in your answers. Respond to what the user said in a "
+    "creative and helpful way, but keep your responses brief. Start by introducing "
+    "yourself. Keep all your responses to 12 words or fewer."
+)
 
 
-    params = DailyMeetingTokenParams(
-        properties=DailyMeetingTokenProperties(
-            user_name=bot_name,
-        )
-    )
-    token = await daily_rest_helper.get_token(url, expiry_time, params=params)
+async def main() -> None:
+    bey_api_key = os.environ["BEY_API_KEY"]
 
-    return (url, token, args)
+    daily_room_url = os.environ["DAILY_ROOM_URL"]
+    daily_api_key = os.environ["DAILY_API_KEY"]
 
+    openai_api_key = os.environ["OPENAI_API_KEY"]
 
-async def main(avatar_id: str | None = None) -> None:
+    speech_to_text = OpenAISTTService(api_key=openai_api_key)
+    language_model = OpenAILLMService(api_key=openai_api_key)
+    text_to_speech = OpenAITTSService(api_key=openai_api_key)
+
+    # ADVANCED CONFIGURATION
+    # Use this to optimize for latency
+    # from pipecat.services.deepgram.stt import DeepgramSTTService
+    # from deepgram import LiveOptions
+    # from pipecat.services.elevenlabs.tts import ElevenLabsTTSService
+    # from pipecat.services.azure.llm import AzureLLMService
+    #
+    # deepgram_api_key = os.environ["DEEPGRAM_API_KEY"]
+    # eleven_api_key = os.environ["ELEVEN_API_KEY"]
+    # azure_openai_api_key = os.environ["AZURE_OPENAI_API_KEY"]
+    #
+    # speech_to_text = DeepgramSTTService(
+    #     api_key=deepgram_api_key,
+    #     live_options=LiveOptions(
+    #         model="nova-3-general",
+    #         language="en-US",
+    #         smart_format=True,
+    #         vad_events=True,
+    #     ),
+    # )
+    # language_model = AzureLLMService(
+    #     api_key=azure_openai_api_key,
+    #     endpoint="https://your.own.azure.com",
+    #     model="gpt-4o-mini",
+    #     api_version="2025-01-01-preview",
+    # )
+    # text_to_speech = ElevenLabsTTSService(
+    #     api_key=eleven_api_key,
+    #     voice_id="21m00Tcm4TlvDq8ikWAM",
+    #     model="eleven_flash_v2_5",
+    # )
+
+    context = OpenAILLMContext([{"role": "system", "content": SYSTEM_PROMPT}])
+    context_aggregator = language_model.create_context_aggregator(context)
+
     async with aiohttp.ClientSession() as session:
-        bot_name = "Bey Video Bot"
-        (room_url, token, _) = await configure_with_args(aiohttp_session=session, bot_name=bot_name)
+        daily_rest_helper = DailyRESTHelper(
+            daily_api_key=daily_api_key,
+            aiohttp_session=session,
+        )
 
-        stt = DeepgramSTTService(
-            api_key=os.getenv("DEEPGRAM_API_KEY"),
-            live_options=LiveOptions(
-                model="nova-2-general",
-                language="en-US",
-                smart_format=True,
-                vad_events=True,
+        voice_bot_name = "My Voice Bot"
+        video_bot_name = "My Video Bot"
+
+        token = await daily_rest_helper.get_token(
+            room_url=daily_room_url,
+            params=DailyMeetingTokenParams(
+                properties=DailyMeetingTokenProperties(user_name=voice_bot_name),
             ),
+            expiry_time=3600,  # 1 hour
         )
-
-        llm = OpenAILLMService(
-            api_key=os.getenv("OPENAI_API_KEY"), model="gpt-4o-mini"
-        )
-        
-        tts = OpenAITTSService(
-            api_key=os.getenv("OPENAI_API_KEY")
-        )
-
-        messages = [
-            {
-                "role": "system",
-                "content": "You are Chatbot, a friendly, helpful robot. Your goal is to demonstrate your capabilities in a succinct way. Your output will be converted to audio so don't include special characters in your answers. Respond to what the user said in a creative and helpful way, but keep your responses brief. Start by introducing yourself. Keep all your responses to 12 words or fewer.",
-            },
-        ]
-        context = OpenAILLMContext(messages)
-
-        context_aggregator = llm.create_context_aggregator(context)
 
         transport = DailyTransport(
-            room_url,
-            token,
-            "Bey example Bot",
-            DailyParams(
+            room_url=daily_room_url,
+            token=token,
+            bot_name=voice_bot_name,
+            params=DailyParams(
                 audio_in_enabled=True,
                 video_out_enabled=False,
                 video_out_is_live=False,
@@ -122,21 +111,29 @@ async def main(avatar_id: str | None = None) -> None:
                 vad_analyzer=SileroVADAnalyzer(),
             ),
         )
-        
-        
-        bey = BeyVideoService(client=transport._client, avatar_id=avatar_id)
+
+        speech_to_video = BeyVideoService(
+            api_key=bey_api_key,
+            avatar_id=AVATAR_ID,
+            bot_name=video_bot_name,
+            # we stream audio to a video bot in the Daily room, so we need this
+            transport_client=transport._client,
+            # video bot joins the room remotely on demand, we need these to manage it
+            rest_helper=daily_rest_helper,
+            session=session,
+        )
 
         pipeline = Pipeline(
             [
                 transport.input(),
-                stt,
+                speech_to_text,
                 context_aggregator.user(),
-                llm,
-                tts,
-                bey,
+                language_model,
+                text_to_speech,
+                speech_to_video,
                 transport.output(),
                 context_aggregator.assistant(),
-            ],
+            ]
         )
 
         task = PipelineTask(
@@ -148,33 +145,34 @@ async def main(avatar_id: str | None = None) -> None:
         )
 
         @transport.event_handler("on_participant_joined")
-        async def on_participant_joined(transport, participant):
-            # Kick off the conversation.
-            if participant["info"]["userName"] == bot_name:
-                await transport.update_subscriptions(participant_settings={participant["id"]: {"media": {"microphone": "unsubscribed"}}})
+        async def handle_participant_joined(transport, participant: dict[str, Any]):
+            if participant["info"]["userName"] == video_bot_name:
+                await transport.update_subscriptions(
+                    participant_settings={
+                        participant["id"]: {"media": {"microphone": "unsubscribed"}}
+                    }
+                )
                 return
 
-            messages.append(
+            context.add_message(
                 {
                     "role": "system",
                     "content": "Please introduce yourself to the user.",
                 }
             )
 
-            await task.queue_frames(
-                [context_aggregator.user().get_context_frame()]
-            )
+            await task.queue_frames([context_aggregator.user().get_context_frame()])
 
         @transport.event_handler("on_participant_left")
-        async def on_participant_left(transport, participant, reason):
+        async def handle_participant_left(
+            transport, participant: dict[str, Any], reason: str
+        ):
             await task.cancel()
 
         runner = PipelineRunner()
         await runner.run(task)
 
+
 if __name__ == "__main__":
     load_dotenv()
-    parser = argparse.ArgumentParser(description="Run a Pipecat agent with Bey avatar.")
-    parser.add_argument("--avatar-id", type=str, help="Avatar ID to use.")
-    args = parser.parse_args()
-    asyncio.run(main(avatar_id=args.avatar_id))
+    asyncio.run(main())
