@@ -1,15 +1,15 @@
 # Beyond Presence LiveKit Agent
 
-A minimal LiveKit avatar agent using the Beyond Presence API (Beta).
+A minimal LiveKit avatar video agent using Beyond Presence.
 
-Your local LLM voice agent powers the conversation, while the API renders video and streams synced audio-video to the room.
+Your local voice agent powers the conversation, while our video agent renders the avatar and streams synced audio-video to the room.
 
 ## Requirements
 
 Make sure to have an account for the following services:
 
-- [LiveKit Cloud](https://cloud.livekit.io)
 - [Beyond Presence](https://app.bey.chat)
+- [LiveKit Cloud](https://cloud.livekit.io)
 - [OpenAI Platform](https://platform.openai.com)
 
 ## Setup
@@ -33,7 +33,9 @@ pip install -r requirements.txt
 python main.py [--avatar-id YOUR_AVATAR_ID]
 ```
 
-On start, a LiveKit worker subscribes to the server and dispatches avatar agents to handle calls.
+On start, a LiveKit worker subscribes to the server and dispatches agents to handle calls.
+Your voice agent processes the conversation but streams its audio output to our video agent rather than directly to the room.
+Our video agent then generates synchronized avatar video from this audio stream and posts the combined video/audio feed to the room for end users.
 
 If no `--avatar-id` is passed, the default avatar is used.
 
