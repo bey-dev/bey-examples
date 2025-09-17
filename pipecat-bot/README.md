@@ -1,8 +1,8 @@
-# Beyond Presence Pipecat Agent
+# Beyond Presence Pipecat Bot
 
-A minimal Pipecat avatar agent using the Beyond Presence API.
+A minimal Pipecat avatar video bot using Beyond Presence.
 
-Your local agent powers the conversation, while the API renders video and streams synced audio-video to the room.
+Your local voice bot powers the conversation, while our video bot renders the avatar and streams synced audio-video to the room.
 
 ## Requirements
 
@@ -32,9 +32,9 @@ pip install -r requirements.txt
 python main.py
 ```
 
-On start, a voice bot and video bot join the Daily room.
-The voice bot processes the conversation but streams its audio output to the video bot rather than directly to the room.
-The video bot then generates synchronized avatar video from this audio stream and posts the combined video/audio feed to the room for end users.
+On start, your voice bot and the Beyond Presence video bot join the Daily room.
+Your voice bot processes the conversation but streams its audio output to our video bot rather than directly to the room.
+Our video bot then generates synchronized avatar video from this audio stream and posts the combined video/audio feed to the room for end users.
 
 ### Client
 
