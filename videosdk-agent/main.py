@@ -4,7 +4,7 @@ from videosdk.plugins.silero import SileroVAD
 from videosdk.plugins.turn_detector import TurnDetector, pre_download_model
 from videosdk.plugins.deepgram import DeepgramSTT
 from videosdk.plugins.openai import OpenAILLM, OpenAITTS
-from videosdk.plugins.elevenlabs import ElevenLabsTTS
+from integration_code import BeyAvatar
 from typing import AsyncIterator
 from dotenv import load_dotenv
 
@@ -28,7 +28,8 @@ async def start_session(context: JobContext):
         llm=OpenAILLM(model="gpt-4o"),
         tts=OpenAITTS(),
         vad=SileroVAD(threshold=0.35),
-        turn_detector=TurnDetector(threshold=0.8)
+        turn_detector=TurnDetector(threshold=0.8),
+        avatar=BeyAvatar(),
     )
 
     session = AgentSession(
