@@ -149,9 +149,9 @@ class BeyAvatar:
                 },
                 json={
                     "avatar_id": self._avatar_id,
-                    "transport_type": "pipecat",
-                    "pipecat_url": "room_url",
-                "pipecat_token": "token",
+                    "transport_type": "videosdk",
+                    "video_sdk_url": "room_url",
+                "video_sdk_url": "token",
             } 
             ) as response:
                 if not response.ok:
