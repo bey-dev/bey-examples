@@ -98,6 +98,8 @@ class BeyVideoTrack(CustomVideoTrack):
 class BeyAvatar:
     def __init__(
         self,
+        room_id: str,
+        token: str,
         bey_url: str = DEFAULT_BEY_HTTP_URL,
         avatar_id: str = "ec52ba7c-529d-4ee2-aab8-2c73a37d82aa",
     ):
@@ -122,6 +124,8 @@ class BeyAvatar:
         self._last_audio_time = 0
         self.bey_url = bey_url
         self._avatar_id = avatar_id
+        self._room_id = room_id
+        self._token = token
 
     async def connect(self):
         loop = asyncio.get_event_loop()
@@ -150,8 +154,8 @@ class BeyAvatar:
                 json={
                     "avatar_id": self._avatar_id,
                     "transport_type": "videosdk",
-                    "video_sdk_url": "room_url",
-                "video_sdk_url": "token",
+                    "video_sdk_url": self._room_id,
+                "video_sdk_url": self._token,
             } 
             ) as response:
                 if not response.ok:

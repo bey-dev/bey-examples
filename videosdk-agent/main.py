@@ -31,7 +31,7 @@ async def start_session(context: JobContext):
         tts=OpenAITTS(),
         vad=SileroVAD(threshold=0.35),
         turn_detector=TurnDetector(threshold=0.8),
-        avatar=BeyAvatar(),
+        avatar=BeyAvatar(room_id=context.room_options.room_id, token=os.getenv("VIDEOSDK_AUTH_TOKEN")),
     )
 
     session = AgentSession(
