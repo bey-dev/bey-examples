@@ -1,8 +1,8 @@
 # Beyond Presence LiveKit Agent
 
-A minimal LiveKit avatar agent using the Beyond Presence API (Beta).
+A minimal video agent using the Beyond Presence speech-to-video integration for LiveKit.
 
-Your local LLM voice agent powers the conversation, while the API renders video and streams synced audio-video to the room.
+Your local LLM voice agent powers the conversation, while Beyond Presence renders and streams the video avatar directly to the room.
 
 ## Requirements
 
@@ -18,35 +18,61 @@ Make sure to have an account for the following services:
 
 Copy `.env.template` to `.env`, then provide the required values for:
 
-- **LiveKit Server**: [Cloud Project page](https://cloud.livekit.io/projects) > Settings > Keys
-- **Beyond Presence API**: [Create and manage API keys](https://docs.bey.dev/api-key#creating-and-managing-api-keys)
-- **OpenAI API**: [API Keys page](https://platform.openai.com/settings/organization/api-keys)
+- **LiveKit Server**: [API Keys](https://cloud.livekit.io/projects/p_/settings/keys)
+- **Beyond Presence API**: [API Keys](https://app.bey.chat/apiKeys)
+- **OpenAI API**: [API Keys](https://platform.openai.com/settings/organization/api-keys)
 
-**Note**: The Beyond Presence avatar service requires a publicly accessible LiveKit server; local-only instances won't suffice.
+You can use a default avatar by leaving the avatar ID variable empty, or provide one to use a specific avatar.
+See [available default avatars](https://docs.bey.dev/get-started/avatars/default).
+
+**Note**: The Beyond Presence speech-to-video integration requires a publicly accessible LiveKit server; local-only instances won't suffice.
 
 ### Agent Worker
+
+Choose your preferred implementation:
+
+#### Python
 
 Requires Python `>=3.9`. Run:
 
 ```sh
 pip install -r requirements.txt
-python main.py [--avatar-id YOUR_AVATAR_ID]
+python main.py
 ```
 
-On start, a LiveKit worker subscribes to the server and dispatches avatar agents to handle calls.
+#### JavaScript
 
-If no `--avatar-id` is passed, the default avatar is used.
+The Beyond Presence plugin is currently available in a fork pending merge.
+To use it, first build the fork:
 
-**Note**: LiveKit code often require the latest Python package versions to function as expected. Keeping dependencies up to date is recommended.
+```sh
+git submodule update --init .js-fork
+pnpm -C .js-fork install
+pnpm -C .js-fork build
+```
+
+Then install dependencies and run the example:
+
+```
+pnpm install
+node --env-file .env main.js
+```
+
+---
+
+On start, a LiveKit worker subscribes to the server and dispatches video agents to handle calls.
+
+**Note**: LiveKit code often require the latest versions to work as expected. Keeping dependencies up to date is recommended.
 
 ### Client
 
-Use any LiveKit client with video support to start a call and interact with the avatar agent.
+Join a call in the [Agents Playground](https://agents-playground.livekit.io) by connecting to your LiveKit Cloud project.
 
-For a quick start, deploy [LiveKit Meet](https://cloud.livekit.io/projects/p_/sandbox/templates/meet) via the LiveKit Cloud template.
+**Note**: The playground shows a three-way conversation, but you can hide the voice agent in your own frontend.
 
-## Documentation
+## Next Steps
 
-- [Beyond Presence Integration & API Reference](https://docs.bey.dev/integration/livekit)
-- [LiveKit Voice Agent Quickstart](https://docs.livekit.io/agents/start/voice-ai)
-- [LiveKit React Integration Guide](https://docs.livekit.io/home/quickstarts/react)
+- [Hackathon Quickstart](.hackathon-quickstart.md): explore tool calling, stt/llm/tts configuration, and more
+- [LiveKit Voice AI Quickstart](https://docs.livekit.io/agents/start/voice-ai): learn how to build agents with LiveKit
+- [LiveKit React Quickstart](https://docs.livekit.io/home/quickstarts/react): integrate LiveKit into your React frontend
+- [Beyond Presence Integrations](https://docs.bey.dev/integrations): discover more integration options

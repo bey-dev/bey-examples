@@ -1,0 +1,7 @@
+{
+	"dependencies": {
+		"@livekit/agents": "file:.js-fork/agents",
+		"@livekit/agents-plugin-bey": "file:.js-fork/plugins/bey",
+		"@livekit/agents-plugin-openai": "file:.js-fork/plugins/openai"
+	}
+}
