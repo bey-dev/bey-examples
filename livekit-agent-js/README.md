@@ -20,11 +20,13 @@ npm run dev
 ```
 
 ### 2. Tool Calling Agent (`src/tool-calling.ts`)
-Template for adding custom functions/tools. See [LiveKit Agents Tools Guide](https://docs.livekit.io/agents/build/tools/) for implementation details.
+Demonstrates adding a custom weather lookup tool. Shows how to use `llm.tool` with Zod schemas for type-safe tool definitions.
 
 ```bash
 npm run dev:tools
 ```
+
+Try asking: "What's the weather like in San Francisco?"
 
 ### 3. STT/LLM/TTS Pipeline (`src/stt-llm-tts.ts`)
 Shows how to use separate Speech-to-Text, Language Model, and Text-to-Speech components with Voice Activity Detection (VAD) instead of the Realtime API.
@@ -168,9 +170,50 @@ Set a different `BEY_AVATAR_ID` in your `.env` file with your custom avatar ID f
 
 ### Add Custom Tools/Functions
 
-LiveKit Agents supports function/tool calling, allowing your agent to invoke custom functions. For detailed implementation, see the [LiveKit Agents Tools Guide](https://docs.livekit.io/agents/build/tools/).
+LiveKit Agents supports function/tool calling, allowing your agent to invoke custom functions. The `src/tool-calling.ts` example shows how to create a weather lookup tool.
 
-The `src/tool-calling.ts` file provides a template for setting up agents with tool calling capabilities. Tools can be defined and integrated with both the Realtime API and STT/LLM/TTS pipeline.
+**Define tools with Zod schemas:**
+
+```typescript
+import { voice, llm } from '@livekit/agents';
+import { z } from 'zod';
+
+class MyAgent extends voice.Agent {
+  constructor() {
+    super({
+      instructions: 'You are a helpful assistant.',
+      tools: {
+        lookupWeather: llm.tool({
+          description: 'Look up weather information for a given location.',
+          parameters: z.object({
+            location: z.string().describe('The city and state, e.g. San Francisco, CA'),
+          }),
+          execute: async ({ location }) => {
+            // Your API call here
+            return { weather: 'sunny', temperatureF: 70 };
+          },
+        }),
+      },
+    });
+  }
+}
+```
+
+**Or use JSON Schema directly:**
+
+```typescript
+parameters: {
+  type: 'object',
+  properties: {
+    location: {
+      type: 'string',
+      description: 'The location to look up weather information for.',
+    },
+  },
+}
+```
+
+See the [LiveKit Agents Tools Guide](https://docs.livekit.io/agents/build/tools/) for more details.
 
 ### Use Alternative STT/LLM/TTS Providers
 
