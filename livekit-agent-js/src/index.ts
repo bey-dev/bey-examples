@@ -1,11 +1,12 @@
 import 'dotenv/config';
-import { AgentSession, cli, defineAgent, WorkerOptions, type JobContext } from '@livekit/agents';
-import { RealtimeModel } from '@livekit/agents-plugin-openai';
+import { type JobContext, WorkerOptions, cli, defineAgent, voice } from '@livekit/agents';
 import * as bey from '@livekit/agents-plugin-bey';
+import * as openai from '@livekit/agents-plugin-openai';
+import { fileURLToPath } from 'node:url';
 
 /**
  * This example demonstrates how to use the Bey Avatar Plugin with LiveKit Agents.
- * 
+ *
  * The agent:
  * 1. Connects to a LiveKit room
  * 2. Initializes a Bey avatar with your configured avatar ID
@@ -14,55 +15,55 @@ import * as bey from '@livekit/agents-plugin-bey';
  * 5. Greets users and engages in conversation with avatar animations
  */
 
-const agent = defineAgent({
+export default defineAgent({
   entry: async (ctx: JobContext) => {
     console.log('🚀 Starting Bey Avatar Agent...');
-    
-    // Connect to the LiveKit room
-    await ctx.connect();
-    console.log('✅ Connected to room:', ctx.room.name);
 
-    // Initialize the Bey avatar session
-    console.log('🎭 Initializing Bey avatar...');
-    const avatarSession = new bey.AvatarSession({
-      apiKey: process.env.BEY_API_KEY,
-      apiUrl: process.env.BEY_API_URL,
-      avatarId: process.env.BEY_AVATAR_ID,
-      avatarParticipantIdentity: 'bey-avatar',
-      avatarParticipantName: 'AI Assistant',
+    // Create the voice agent with instructions
+    const agent = new voice.Agent({
+      instructions: `You are a friendly and helpful AI assistant with a visual avatar.
+        You can see and interact with users through your avatar.
+        Keep your responses natural and conversational.
+        When users join, warmly greet them and ask how you can help.`,
     });
 
     // Create the agent session with OpenAI Realtime
     console.log('🤖 Creating agent session with OpenAI Realtime...');
-    const session = new AgentSession({
-      llm: new RealtimeModel({
+    const session = new voice.AgentSession({
+      llm: new openai.realtime.RealtimeModel({
         voice: 'alloy', // Options: alloy, echo, fable, onyx, nova, shimmer
         temperature: 0.8,
-        instructions: `You are a friendly and helpful AI assistant with a visual avatar. 
-        You can see and interact with users through your avatar. 
-        Keep your responses natural and conversational.
-        When users join, warmly greet them and ask how you can help.`,
       }),
+    });
+
+    // Connect to the LiveKit room
+    await ctx.connect();
+    console.log('✅ Connected to room:', ctx.room.name);
+
+    // Start the agent session
+    console.log('🎙️ Starting agent session...');
+    await session.start({
+      agent,
+      room: ctx.room,
+    });
+    console.log('✅ Agent session started');
+
+    // Initialize the Bey avatar session
+    console.log('🎭 Initializing Bey avatar...');
+    const avatarId = process.env.BEY_AVATAR_ID;
+    const avatar = new bey.AvatarSession({
+      avatarId: avatarId || undefined,
     });
 
     // Start the avatar (this will make the avatar join the room)
     console.log('🎬 Starting avatar session...');
-    await avatarSession.start(session, ctx.room, {
-      livekitUrl: process.env.LIVEKIT_URL,
-      livekitApiKey: process.env.LIVEKIT_API_KEY,
-      livekitApiSecret: process.env.LIVEKIT_API_SECRET,
-    });
+    await avatar.start(session, ctx.room);
     console.log('✅ Avatar session started successfully');
-
-    // Start the agent session
-    console.log('🎙️ Starting agent session...');
-    await session.start(ctx.room);
-    console.log('✅ Agent session started');
 
     // Generate initial greeting
     console.log('👋 Generating greeting...');
-    await session.generateReply({
-      instructions: `Greet the user warmly and introduce yourself as their AI assistant. 
+    session.generateReply({
+      instructions: `Greet the user warmly and introduce yourself as their AI assistant.
       Mention that you have a visual avatar and you're here to help with whatever they need.`,
     });
 
@@ -72,9 +73,4 @@ const agent = defineAgent({
 
 // Configure and start the worker
 console.log('⚙️  Configuring worker...');
-const workerOptions = new WorkerOptions({
-  agent,
-});
-
-console.log('🏃 Starting worker...');
-cli.runApp(workerOptions);
+cli.runApp(new WorkerOptions({ agent: fileURLToPath(import.meta.url) }));
