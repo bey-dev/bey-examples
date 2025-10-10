@@ -26,12 +26,32 @@ Copy `.env.template` to `.env`, then provide the required values for:
 
 ### Agent Worker
 
+Choose your preferred implementation:
+
+#### Python
+
 Requires Python `>=3.9`. Run:
 
 ```sh
 pip install -r requirements.txt
 python main.py [--avatar-id YOUR_AVATAR_ID]
 ```
+
+#### JavaScript
+
+The Beyond Presence plugin is currently available in a fork pending merge. Install from
+
+```sh
+npm install github:mshehrozsajjad/agents-js#a6a29b763b557fe2a4d0e209eb4612075ce22b2e
+```
+
+Then run:
+
+```sh
+node main.js [--avatar-id YOUR_AVATAR_ID]
+```
+
+---
 
 On start, a LiveKit worker subscribes to the server and dispatches avatar agents to handle calls.
 
