@@ -72,6 +72,7 @@ Join a call in the [Agents Playground](https://agents-playground.livekit.io) by 
 
 ## Next Steps
 
+- [Hackathon Quickstart](.hackathon-quickstart.md): explore tool calling, stt/llm/tts configuration, and more
 - [LiveKit Voice AI Quickstart](https://docs.livekit.io/agents/start/voice-ai): learn how to build agents with LiveKit
 - [LiveKit React Quickstart](https://docs.livekit.io/home/quickstarts/react): integrate LiveKit into your React frontend
 - [Beyond Presence Integrations](https://docs.bey.dev/integrations): discover more integration options

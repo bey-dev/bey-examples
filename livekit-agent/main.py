@@ -19,8 +19,10 @@ async def entrypoint(ctx: JobContext) -> None:
     await ctx.connect(auto_subscribe=AutoSubscribe.AUDIO_ONLY)
 
     voice_agent_session = AgentSession(
-        llm=openai.realtime.RealtimeModel(voice="alloy")
+        llm=openai.realtime.RealtimeModel(voice="ash")
     )
+
+    voice_agent = Agent(instructions="You are a friendly AI with a visual avatar")
 
     bey_avatar_id = os.environ["BEY_AVATAR_ID"]
     if avatar_id != "":
@@ -28,10 +30,7 @@ async def entrypoint(ctx: JobContext) -> None:
     else:
         bey_avatar_session = bey.AvatarSession()
 
-    await voice_agent_session.start(
-        agent=Agent(instructions="Talk to me!"),
-        room=ctx.room,
-    )
+    await voice_agent_session.start(agent=voice_agent, room=ctx.room)
 
     await bey_avatar_session.start(voice_agent_session, room=ctx.room)
 

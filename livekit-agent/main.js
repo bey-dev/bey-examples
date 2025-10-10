@@ -16,19 +16,18 @@ export default defineAgent({
     await ctx.connect();
 
     const voiceAgentSession = new voice.AgentSession({
-      llm: new openai.realtime.RealtimeModel({
-        voice: "alloy",
-      }),
+      llm: new openai.realtime.RealtimeModel({ voice: "alloy" }),
+    });
+
+    const voiceAgent = new voice.Agent({
+      instructions: "You are a friendly AI with a visual avatar",
     });
 
     const beyAvatarSession = beyAvatarId
       ? new bey.AvatarSession({ beyAvatarId })
       : new bey.AvatarSession();
 
-    await voiceAgentSession.start({
-      agent: new voice.Agent({ instructions: "Talk to me!" }),
-      room: ctx.room,
-    });
+    await voiceAgentSession.start({ agent: voiceAgent, room: ctx.room });
 
     await beyAvatarSession.start(voiceAgentSession, ctx.room);
   },
