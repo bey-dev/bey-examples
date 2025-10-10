@@ -34,28 +34,32 @@ Requires Python `>=3.9`. Run:
 
 ```sh
 pip install -r requirements.txt
-python main.py [--avatar-id YOUR_AVATAR_ID]
+python main.py
 ```
 
 #### JavaScript
 
-The Beyond Presence plugin is currently available in a fork pending merge. Install from
+The Beyond Presence plugin is currently available in a fork pending merge.
+To use it, first build the fork:
 
 ```sh
-npm install github:mshehrozsajjad/agents-js#a6a29b763b557fe2a4d0e209eb4612075ce22b2e
+git submodule update --init .js-fork
+pnpm -C .js-fork install
+pnpm -C .js-fork build
 ```
 
-Then run:
+Then install dependencies and run the example:
 
-```sh
-node main.js [--avatar-id YOUR_AVATAR_ID]
+```
+pnpm install
+node --env-file .env main.js
 ```
 
 ---
 
 On start, a LiveKit worker subscribes to the server and dispatches avatar agents to handle calls.
 
-If no `--avatar-id` is passed, the default avatar is used.
+If `BEY_AVATAR_ID` is not specified in `.env`, the default avatar is used.
 
 **Note**: LiveKit code often require the latest Python package versions to function as expected. Keeping dependencies up to date is recommended.
 
