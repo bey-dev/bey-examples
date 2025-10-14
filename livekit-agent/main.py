@@ -1,7 +1,6 @@
 import argparse
+import os
 import sys
-from functools import partial
-from typing import Optional
 
 from dotenv import load_dotenv
 from livekit.agents import (
@@ -16,36 +15,33 @@ from livekit.agents.voice import Agent, AgentSession
 from livekit.plugins import bey, openai
 
 
-async def entrypoint(ctx: JobContext, avatar_id: Optional[str]) -> None:
+async def entrypoint(ctx: JobContext) -> None:
     await ctx.connect(auto_subscribe=AutoSubscribe.AUDIO_ONLY)
 
-    local_agent_session = AgentSession(
-        llm=openai.realtime.RealtimeModel(voice="alloy")
+    voice_agent_session = AgentSession(
+        llm=openai.realtime.RealtimeModel(voice="ash")
     )
 
-    if avatar_id is not None:
-        bey_avatar_session = bey.AvatarSession(avatar_id=avatar_id)
+    voice_agent = Agent(instructions="You are a friendly AI with a visual avatar")
+
+    bey_avatar_id = os.environ["BEY_AVATAR_ID"]
+    if avatar_id != "":
+        bey_avatar_session = bey.AvatarSession(avatar_id=bey_avatar_id)
     else:
         bey_avatar_session = bey.AvatarSession()
-    await bey_avatar_session.start(local_agent_session, room=ctx.room)
 
-    await local_agent_session.start(
-        agent=Agent(instructions="Talk to me!"),
-        room=ctx.room,
-    )
+    await voice_agent_session.start(agent=voice_agent, room=ctx.room)
+
+    await bey_avatar_session.start(voice_agent_session, room=ctx.room)
 
 
 if __name__ == "__main__":
     load_dotenv()
 
-    parser = argparse.ArgumentParser(description="Run a LiveKit agent with Bey avatar.")
-    parser.add_argument("--avatar-id", type=str, help="Avatar ID to use.")
-    args = parser.parse_args()
-
     sys.argv = [sys.argv[0], "dev"]  # overwrite args for the LiveKit CLI
     cli.run_app(
         WorkerOptions(
-            entrypoint_fnc=partial(entrypoint, avatar_id=args.avatar_id),
+            entrypoint_fnc=entrypoint,
             worker_type=WorkerType.ROOM,
         )
     )

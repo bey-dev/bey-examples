@@ -19,7 +19,7 @@ def main(api_key: str, agent_id: str) -> None:
         )
         exit(1)
 
-    calls = calls_response.json()
+    calls = calls_response.json()["data"]
     for call in calls:
         if call["agent_id"] != agent_id:
             continue

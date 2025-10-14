@@ -1,0 +1,3 @@
+[submodule "livekit-agent/.js-fork"]
+	path = livekit-agent/.js-fork
+	url = https://github.com/mshehrozsajjad/agents-js.git
