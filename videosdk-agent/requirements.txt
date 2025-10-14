@@ -1,0 +1,2 @@
+videosdk-agents[deepgram,openai,elevenlabs,silero,simli,turn_detector]
+python-dotenv
