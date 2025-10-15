@@ -17,14 +17,6 @@ from pipecat.services.openai.tts import OpenAITTSService
 
 from pipecat_bey.transport import BeyParams, BeyTransport
 
-SYSTEM_PROMPT = (
-    "You are Chatbot, a friendly, helpful robot. Your goal is to demonstrate your "
-    "capabilities in a succinct way. Your output will be converted to audio so don't "
-    "include special characters in your answers. Respond to what the user said in a "
-    "creative and helpful way, but keep your responses brief. Start by introducing "
-    "yourself. Keep all your responses to 12 words or fewer."
-)
-
 
 async def main() -> None:
     speech_to_text = OpenAISTTService()
@@ -59,7 +51,14 @@ async def main() -> None:
     #     model="eleven_flash_v2_5",
     # )
 
-    context = OpenAILLMContext(messages=[{"role": "system", "content": SYSTEM_PROMPT}])
+    context = OpenAILLMContext(
+        messages=[
+            {
+                "role": "system",
+                "content": "You are a helpful assistant with a visual presence.",
+            }
+        ]
+    )
     context_aggregator = language_model.create_context_aggregator(context)
 
     async with aiohttp.ClientSession() as session:
@@ -103,7 +102,7 @@ async def main() -> None:
             context.add_message(
                 {
                     "role": "system",
-                    "content": "Start by greeting the user and ask how you can help.",
+                    "content": "Greet the user and ask how you can help them.",
                 }
             )
             await task.queue_frames([LLMRunFrame()])
