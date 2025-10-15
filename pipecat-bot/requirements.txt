@@ -1,0 +1,8 @@
+# loguru is recommended by Pipecat
+# Ref: https://docs.pipecat.ai/deployment/pipecat-cloud/fundamentals/logging#session-logging
+loguru ~= 0.7.0
+
+pipecat-ai[openai,silero]
+pipecat-ai-bey >= 0.0.3
+
+python-dotenv ~= 1.0
