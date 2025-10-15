@@ -42,16 +42,7 @@ python main.py
 
 #### JavaScript
 
-The Beyond Presence plugin is currently available in a fork pending merge.
-To use it, first build the fork:
-
-```sh
-git submodule update --init .js-fork
-pnpm -C .js-fork install
-pnpm -C .js-fork build
-```
-
-Then install dependencies and run the example:
+Install dependencies and run the example:
 
 ```
 pnpm install
