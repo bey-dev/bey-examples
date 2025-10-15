@@ -64,6 +64,8 @@ On start, a LiveKit worker subscribes to the server and dispatches agents to han
 Your voice agent processes the conversation but streams its audio output to the Beyond Presence video agent rather than directly to the room.
 Our video agent then generates synchronized avatar video from this audio stream and posts the combined video/audio feed to the room for end users.
 
+**Note**: The code also features snippets to uncomment that let you customize your agent's behavior!
+
 **Note**: LiveKit code often require the latest versions to work as expected. Keeping dependencies up to date is recommended.
 
 ### Client
@@ -74,7 +76,6 @@ Join a call in the [Agents Playground](https://agents-playground.livekit.io) by 
 
 ## Next Steps
 
-- [Customize your Agent](.customize-your-agent.md): explore tool calling, STT/LLM/TTS configuration, and more
 - [LiveKit React Quickstart](https://docs.livekit.io/home/quickstarts/react): integrate LiveKit into your React frontend
 - [LiveKit Voice AI Quickstart](https://docs.livekit.io/agents/start/voice-ai): learn how to build voice agents with LiveKit
 - [Beyond Presence Integrations](https://docs.bey.dev/integrations): discover more integration options
