@@ -36,13 +36,11 @@ On start, your voice bot and the Beyond Presence video bot join the Daily room.
 Your voice bot processes the conversation but streams its audio output to our video bot rather than directly to the room.
 Our video bot then generates synchronized avatar video from this audio stream and posts the combined video/audio feed to the room for end users.
 
+**Note**: The code also features snippets to uncomment that let you customize your agent's behavior!
+
 ### Client
 
 Use any browser and join the room by visiting the `DAILY_ROOM_URL` specified above.
-
-### Advanced Configuration
-
-To optimize for latency, uncomment the lines relative to Deepgram STT, Azure LLM, and ElevenLabs TTS and provide API keys for the services.
 
 ## Documentation
 
