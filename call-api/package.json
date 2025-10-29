@@ -1,0 +1,20 @@
+{
+  "name": "bey-call-api-example",
+  "version": "1.0.0",
+  "description": "Simple example demonstrating how to use the Beyond Presence Call API with LiveKit",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "livekit-client": "^2.7.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.19",
+    "typescript": "^5.3.3",
+    "vite": "^5.1.3"
+  }
+}
