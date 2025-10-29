@@ -14,101 +14,139 @@
   </head>
   <body>
     <div class="container">
+      <div class="header-section">
+        <h1>Beyond Presence Call API</h1>
+        <p class="subtitle">Connect to your AI agent using the Bey API</p>
+      </div>
+
       <div class="row">
         <div class="col-md-8">
-          <h2>Bey API - Simple Call Example</h2>
-          <p class="text-muted">Connect to your Beyond Presence agent using your API credentials</p>
-          <br />
-
-          <!-- API Credentials Section -->
-          <div id="credentials-area">
-            <div class="form-group">
-              <label for="api-key"><b>API Key</b></label>
-              <input
-                type="password"
-                class="form-control"
-                id="api-key"
-                placeholder="Enter your Beyond Presence API key"
-              />
-              <small class="form-text text-muted">
-                Get your API key from the <a href="https://app.bey.dev" target="_blank">Beyond Presence Dashboard</a>
-              </small>
-            </div>
-            <div class="form-group">
-              <label for="agent-id"><b>Agent ID</b></label>
-              <input
-                type="text"
-                class="form-control"
-                id="agent-id"
-                placeholder="Enter your agent ID"
-              />
-              <small class="form-text text-muted">
-                Find your agent ID in the agents section of your dashboard
-              </small>
+          <div class="card credentials-card">
+            <h5 class="card-title">API Credentials</h5>
+            <div id="credentials-area">
+              <div class="form-group">
+                <label for="api-key">API Key</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="api-key"
+                  placeholder="Enter your API key"
+                />
+                <small class="form-text text-muted">
+                  Get your key from <a href="https://app.bey.chat" target="_blank">app.bey.chat</a>
+                </small>
+              </div>
+              <div class="form-group">
+                <label for="agent-id">Agent ID</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="agent-id"
+                  placeholder="Enter your agent ID"
+                />
+                <small class="form-text text-muted">
+                  Found in your dashboard agents section
+                </small>
+              </div>
             </div>
           </div>
 
-          <!-- Actions -->
-          <div id="actions-area">
-            <button
-              id="start-call-button"
-              class="btn btn-primary btn-lg mt-3"
-              type="button"
-              onclick="appActions.startCall()"
-            >
-              Start Call
-            </button>
-            <button
-              id="toggle-audio-button"
-              class="btn btn-secondary mt-3 ml-2"
-              disabled
-              type="button"
-              onclick="appActions.toggleAudio()"
-            >
-              Enable Mic
-            </button>
-            <button
-              id="toggle-video-button"
-              class="btn btn-secondary mt-3 ml-2"
-              disabled
-              type="button"
-              onclick="appActions.toggleVideo()"
-            >
-              Enable Camera
-            </button>
-            <button
-              id="disconnect-button"
-              class="btn btn-danger mt-3 ml-2"
-              disabled
-              type="button"
-              onclick="appActions.disconnect()"
-            >
-              End Call
-            </button>
-          </div>
+          <div class="controls-section">
+            <div id="status-area">
+              <div id="status-message" class="alert" style="display: none;"></div>
+            </div>
 
-          <!-- Status Area -->
-          <div id="status-area" class="mt-4">
-            <div id="status-message" class="alert" style="display: none;"></div>
+            <div id="actions-area">
+              <button
+                id="start-call-button"
+                class="btn btn-primary btn-lg"
+                type="button"
+                onclick="appActions.startCall()"
+              >
+                Start Call
+              </button>
+              <div class="call-controls">
+                <button
+                  id="toggle-audio-button"
+                  class="btn btn-outline-secondary"
+                  disabled
+                  type="button"
+                  onclick="appActions.toggleAudio()"
+                >
+                  Enable Mic
+                </button>
+                <button
+                  id="toggle-video-button"
+                  class="btn btn-outline-secondary"
+                  disabled
+                  type="button"
+                  onclick="appActions.toggleVideo()"
+                >
+                  Enable Camera
+                </button>
+                <button
+                  id="disconnect-button"
+                  class="btn btn-danger"
+                  disabled
+                  type="button"
+                  onclick="appActions.disconnect()"
+                >
+                  End Call
+                </button>
+              </div>
+            </div>
+
+            <div class="device-selects">
+              <div class="form-group">
+                <label for="video-input">Camera</label>
+                <select
+                  id="video-input"
+                  class="form-control"
+                  onchange="appActions.handleDeviceSelected(event)"
+                  disabled
+                >
+                  <option>Camera (default)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="audio-input">Microphone</label>
+                <select
+                  id="audio-input"
+                  class="form-control"
+                  onchange="appActions.handleDeviceSelected(event)"
+                  disabled
+                >
+                  <option>Microphone (default)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="audio-output">Speaker</label>
+                <select
+                  id="audio-output"
+                  class="form-control"
+                  onchange="appActions.handleDeviceSelected(event)"
+                  disabled
+                >
+                  <option>Speaker (default)</option>
+                </select>
+              </div>
+            </div>
           </div>
         </div>
 
-        <!-- Chat Section -->
         <div class="col-md-4">
-          <h3>Chat</h3>
-          <div id="chat-area">
-            <textarea class="form-control" id="chat" rows="9" readonly></textarea>
-            <div id="chat-input-area">
-              <div>
+          <div class="card chat-card">
+            <h5 class="card-title">Chat</h5>
+            <div id="chat-area">
+              <textarea class="form-control" id="chat" rows="12" readonly></textarea>
+              <div id="chat-input-area">
                 <input
                   type="text"
                   class="form-control"
                   id="entry"
-                  placeholder="Type your message here"
+                  placeholder="Type a message..."
                   disabled
                 />
-              </div>
-              <div>
                 <button
                   id="send-button"
                   class="btn btn-primary"
@@ -124,14 +162,7 @@
         </div>
       </div>
 
-      <!-- Participants Area -->
-      <div id="participants-area" class="mt-4"></div>
-
-      <!-- Log Area -->
-      <div id="log-area" class="mt-4">
-        <h5>Connection Log</h5>
-        <textarea id="log" readonly></textarea>
-      </div>
+      <div id="participants-area"></div>
     </div>
     <script src="./demo.ts" type="module"></script>
   </body>

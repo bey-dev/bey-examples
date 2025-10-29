@@ -19,8 +19,7 @@ setLogLevel(LogLevel.info);
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 
-// API Configuration
-const BEY_API_URL = 'https://api.bey.dev/v1/calls';
+const BEY_API_URL = 'http://localhost:7999/v1/calls';
 
 interface BeyCallResponse {
   id: string;
@@ -38,8 +37,6 @@ let currentCallId: string | undefined;
 const state = {
   chatMessages: [] as Array<{ from: string; message: string; timestamp: number }>,
 };
-
-// App actions
 const appActions = {
   startCall: async () => {
     const apiKey = ($('api-key') as HTMLInputElement).value.trim();
@@ -53,9 +50,8 @@ const appActions = {
     try {
       setButtonDisabled('start-call-button', true);
       showStatus('info', 'Starting call...');
-      appendLog('Calling Bey API to create a new call...');
+      appendLog('Creating new call session...');
 
-      // Call Bey API
       const response = await fetch(BEY_API_URL, {
         method: 'POST',
         headers: {
@@ -75,10 +71,9 @@ const appActions = {
       const callData: BeyCallResponse = await response.json();
       currentCallId = callData.id;
 
-      appendLog(`Call created successfully. Call ID: ${callData.id}`);
-      appendLog(`Connecting to LiveKit room...`);
+      appendLog(`Call created: ${callData.id}`);
+      appendLog(`Connecting to room...`);
 
-      // Connect to LiveKit
       await connectToLiveKit(callData.livekit_url, callData.livekit_token);
 
       showStatus('success', `Connected! Call ID: ${callData.id}`);
@@ -97,11 +92,8 @@ const appActions = {
 
     try {
       await currentRoom.localParticipant.setMicrophoneEnabled(!enabled);
-      updateButtonText(
-        'toggle-audio-button',
-        currentRoom.localParticipant.isMicrophoneEnabled ? 'Disable Mic' : 'Enable Mic'
-      );
       appendLog(`Microphone ${!enabled ? 'enabled' : 'disabled'}`);
+      updateButtonsForPublishState();
     } catch (error: any) {
       appendLog(`Error toggling audio: ${error.message}`);
     }
@@ -116,17 +108,35 @@ const appActions = {
 
     try {
       await currentRoom.localParticipant.setCameraEnabled(!enabled);
-      updateButtonText(
-        'toggle-video-button',
-        currentRoom.localParticipant.isCameraEnabled ? 'Disable Camera' : 'Enable Camera'
-      );
       appendLog(`Camera ${!enabled ? 'enabled' : 'disabled'}`);
       renderParticipant(currentRoom.localParticipant);
+      updateButtonsForPublishState();
     } catch (error: any) {
       appendLog(`Error toggling video: ${error.message}`);
     }
 
     setButtonDisabled('toggle-video-button', false);
+  },
+
+  handleDeviceSelected: async (e: Event) => {
+    const deviceId = (e.target as HTMLSelectElement).value;
+    const elementId = (e.target as HTMLSelectElement).id;
+
+    if (!currentRoom) return;
+
+    let kind: MediaDeviceKind;
+    if (elementId === 'video-input') {
+      kind = 'videoinput';
+    } else if (elementId === 'audio-input') {
+      kind = 'audioinput';
+    } else if (elementId === 'audio-output') {
+      kind = 'audiooutput';
+    } else {
+      return;
+    }
+
+    await currentRoom.switchActiveDevice(kind, deviceId);
+    appendLog(`Switched ${kind} to device: ${deviceId}`);
   },
 
   sendMessage: () => {
@@ -170,7 +180,6 @@ async function connectToLiveKit(url: string, token: string): Promise<void> {
 
   const room = new Room(roomOptions);
 
-  // Set up event listeners
   room
     .on(RoomEvent.ParticipantConnected, participantConnected)
     .on(RoomEvent.ParticipantDisconnected, participantDisconnected)
@@ -190,28 +199,46 @@ async function connectToLiveKit(url: string, token: string): Promise<void> {
     })
     .on(RoomEvent.TrackUnsubscribed, (_, pub, participant) => {
       renderParticipant(participant);
+    })
+    .on(RoomEvent.AudioPlaybackStatusChanged, () => {
+      if (room.canPlaybackAudio) {
+        appendLog('Audio playback enabled');
+      } else {
+        appendLog('Audio playback blocked - user interaction required');
+      }
     });
 
   try {
-    // Connect to the room
-    await room.connect(url, token);
+    const publishPromise = new Promise<void>(async (resolve, reject) => {
+      try {
+        await room.localParticipant.enableCameraAndMicrophone();
+        appendLog('Camera and microphone enabled');
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+
+    await Promise.all([room.connect(url, token), publishPromise]);
+
     currentRoom = room;
     (window as any).currentRoom = room;
 
     appendLog(`Connected to room: ${room.name}`);
 
-    // Render existing participants
     room.remoteParticipants.forEach((participant) => {
       participantConnected(participant);
     });
     participantConnected(room.localParticipant);
+    updateButtonsForPublishState();
+
+    await room.startAudio();
+    appendLog('Started audio playback');
   } catch (error: any) {
-    appendLog(`Failed to connect to LiveKit: ${error.message}`);
+    appendLog(`Failed to connect: ${error.message}`);
     throw error;
   }
 }
-
-// Event Handlers
 function participantConnected(participant: Participant) {
   appendLog(`Participant connected: ${participant.identity}`);
   participant
@@ -264,10 +291,7 @@ function showStatus(type: 'success' | 'error' | 'info', message: string) {
 }
 
 function appendLog(message: string) {
-  const logger = $('log');
-  const timestamp = new Date().toLocaleTimeString();
-  logger.value += `[${timestamp}] ${message}\n`;
-  logger.scrollTop = logger.scrollHeight;
+  console.log(`[Bey API] ${message}`);
 }
 
 function addChatMessage(from: string, message: string) {
@@ -292,6 +316,7 @@ function updateButtonText(buttonId: string, text: string) {
 function setButtonsForState(connected: boolean) {
   const connectedButtons = ['toggle-audio-button', 'toggle-video-button', 'disconnect-button', 'send-button', 'entry'];
   const disconnectedButtons = ['start-call-button'];
+  const deviceSelects = ['video-input', 'audio-input', 'audio-output'];
 
   if (connected) {
     connectedButtons.forEach((id) => {
@@ -302,6 +327,11 @@ function setButtonsForState(connected: boolean) {
       const el = $(id);
       if (el) el.setAttribute('disabled', 'true');
     });
+    deviceSelects.forEach((id) => {
+      const el = $(id);
+      if (el) el.removeAttribute('disabled');
+    });
+    handleDevicesChanged();
   } else {
     connectedButtons.forEach((id) => {
       const el = $(id);
@@ -311,12 +341,65 @@ function setButtonsForState(connected: boolean) {
       const el = $(id);
       if (el) el.removeAttribute('disabled');
     });
+    deviceSelects.forEach((id) => {
+      const el = $(id);
+      if (el) el.setAttribute('disabled', 'true');
+    });
+  }
+}
+
+function updateButtonsForPublishState() {
+  if (!currentRoom) return;
+
+  const lp = currentRoom.localParticipant;
+
+  updateButtonText(
+    'toggle-video-button',
+    lp.isCameraEnabled ? 'Disable Camera' : 'Enable Camera'
+  );
+
+  updateButtonText(
+    'toggle-audio-button',
+    lp.isMicrophoneEnabled ? 'Disable Mic' : 'Enable Mic'
+  );
+}
+
+async function handleDevicesChanged() {
+  const kinds: MediaDeviceKind[] = ['videoinput', 'audioinput', 'audiooutput'];
+  const ids = ['video-input', 'audio-input', 'audio-output'];
+
+  for (let i = 0; i < kinds.length; i++) {
+    const kind = kinds[i];
+    const elementId = ids[i];
+    const devices = await Room.getLocalDevices(kind);
+    const element = $(elementId) as HTMLSelectElement;
+    if (element) {
+      populateSelect(element, devices);
+    }
+  }
+}
+
+function populateSelect(element: HTMLSelectElement, devices: MediaDeviceInfo[]) {
+  element.innerHTML = '';
+
+  for (const device of devices) {
+    const option = document.createElement('option');
+    option.text = device.label || `${device.kind} (${device.deviceId.slice(0, 8)})`;
+    option.value = device.deviceId;
+    element.appendChild(option);
   }
 }
 
 function renderParticipant(participant: Participant, remove: boolean = false) {
   const container = $('participants-area');
   if (!container) return;
+
+  const isAgent = participant.identity === 'avatar_worker';
+  const isLocal = isLocalParticipant(participant);
+
+  if (!isAgent && !isLocal) {
+    return;
+  }
 
   const { identity } = participant;
   let div = container.querySelector(`#participant-${identity}`) as HTMLDivElement;
@@ -349,15 +432,14 @@ function renderParticipant(participant: Participant, remove: boolean = false) {
   const micElm = container.querySelector(`#mic-${identity}`);
 
   if (nameElm) {
-    nameElm.innerHTML = participant.identity + (isLocalParticipant(participant) ? ' (You)' : '');
+    nameElm.innerHTML = isLocal ? 'You' : 'Agent';
   }
 
-  // Handle video
   const cameraPub = participant.getTrackPublication(Track.Source.Camera);
   const cameraEnabled = cameraPub && cameraPub.isSubscribed && !cameraPub.isMuted;
 
   if (cameraEnabled) {
-    if (isLocalParticipant(participant)) {
+    if (isLocal) {
       videoElm.style.transform = 'scale(-1, 1)';
     }
     cameraPub?.videoTrack?.attach(videoElm);
@@ -369,11 +451,10 @@ function renderParticipant(participant: Participant, remove: boolean = false) {
     videoElm.srcObject = null;
   }
 
-  // Handle audio
   const micPub = participant.getTrackPublication(Track.Source.Microphone);
   const micEnabled = micPub && micPub.isSubscribed && !micPub.isMuted;
 
-  if (micEnabled && !isLocalParticipant(participant)) {
+  if (micEnabled && !isLocal) {
     micPub?.audioTrack?.attach(audioElm);
   }
 
@@ -381,7 +462,6 @@ function renderParticipant(participant: Participant, remove: boolean = false) {
     micElm.innerHTML = micEnabled ? '🎤' : '🔇';
   }
 
-  // Speaking indicator
   if (participant.isSpeaking) {
     div.classList.add('speaking');
   } else {
@@ -399,8 +479,4 @@ function clearParticipants() {
   if (chatEl) chatEl.value = '';
 }
 
-// Export to window for onclick handlers
 (window as any).appActions = appActions;
-
-// Initial setup
-appendLog('Ready to start a call. Enter your API credentials and click "Start Call".');
