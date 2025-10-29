@@ -163,6 +163,7 @@ Beyond Presence integrates seamlessly with the entire LiveKit ecosystem:
 <tr><td>Other Platforms SDKs</td><td><a href="https://github.com/livekit/rust-sdks">Rust</a> · <a href="https://github.com/livekit/node-sdks">Node.js</a> · <a href="https://github.com/livekit/python-sdks">Python</a> · <a href="https://github.com/livekit/client-sdk-unity">Unity</a> · <a href="https://github.com/livekit/client-sdk-unity-web">Unity (WebGL)</a> · <a href="https://github.com/livekit/client-sdk-esp32">ESP32</a></td></tr><tr></tr>
 <tr><td>UI Components</td><td><a href="https://github.com/livekit/components-js">React</a> · <a href="https://github.com/livekit/components-android">Android Compose</a> · <a href="https://github.com/livekit/components-swift">SwiftUI</a> · <a href="https://github.com/livekit/components-flutter">Flutter</a></td></tr><tr></tr>
 <tr><td>Agents Frameworks</td><td><a href="https://github.com/livekit/agents">Python</a> · <a href="https://github.com/livekit/agents-js">Node.js</a> · <a href="https://github.com/livekit/agent-playground">Playground</a></td></tr><tr></tr>
+</tbody>
 </table>
 
 **Beyond Presence Plugin**: Our official plugins are available for both [Python](https://docs.livekit.io/agents/models/avatar/plugins/bey/) and [Node.js](https://www.npmjs.com/package/@livekit/agents-plugin-bey) agents frameworks, enabling advanced integration scenarios.
