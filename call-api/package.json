@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "livekit-client": "^2.7.4"
+    "livekit-client": "^2.15.14"
   },
   "devDependencies": {
     "@types/node": "^20.11.19",

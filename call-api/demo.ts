@@ -1,6 +1,5 @@
-import type { RoomConnectOptions, RoomOptions, ChatMessage } from 'livekit-client';
+import type { RoomOptions, ChatMessage } from 'livekit-client';
 import {
-  ConnectionState,
   DisconnectReason,
   Participant,
   ParticipantEvent,
@@ -209,16 +208,15 @@ async function connectToLiveKit(url: string, token: string): Promise<void> {
     });
 
   try {
-    const publishPromise = room.localParticipant.enableCameraAndMicrophone().then(() => {
-      appendLog('Camera and microphone enabled');
-    });
-
-    await Promise.all([room.connect(url, token), publishPromise]);
+    await room.connect(url, token);
 
     currentRoom = room;
     (window as any).currentRoom = room;
 
     appendLog(`Connected to room: ${room.name}`);
+
+    await room.localParticipant.enableCameraAndMicrophone();
+    appendLog('Camera and microphone enabled');
 
     room.remoteParticipants.forEach((participant) => {
       participantConnected(participant);
