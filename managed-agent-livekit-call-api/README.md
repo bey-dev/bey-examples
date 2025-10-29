@@ -4,11 +4,20 @@ A simple, interactive example demonstrating how to use the Beyond Presence Call 
 
 ## Overview
 
+The LiveKit-based implementation of our API provides a streamlined approach to integrating interactive avatars into web applications. This example demonstrates using the LiveKit browser SDK, but you can use **any LiveKit client SDK or UI components** based on your stack.
+
+### Flexible Integration Options
+
+- **Client SDKs**: Use LiveKit SDKs for Browser, iOS/macOS/visionOS, Android, Flutter, React Native, Rust, Node.js, Python, Unity, Unity (WebGL), or ESP32
+- **UI Components**: Leverage pre-built UI components for React, Android Compose, SwiftUI, or Flutter
+- **Agent Frameworks**: For advanced use cases, LiveKit officially supports our plugin for both Python and Node.js agents frameworks
+
 This example shows how to:
 - Call the Beyond Presence API to create a new call session
 - Receive LiveKit connection credentials
 - Connect to a LiveKit room with audio/video
 - Interact with your AI agent in real-time
+- Switch camera, microphone, and speaker devices
 - Send chat messages during the call
 
 ## Prerequisites
@@ -141,11 +150,28 @@ If LiveKit connection fails:
 - Verify your firewall isn't blocking WebSocket connections
 - Ensure you have a stable internet connection
 
+## LiveKit Ecosystem
+
+Beyond Presence integrates seamlessly with the entire LiveKit ecosystem:
+
+### Client SDKs
+- **Web & Mobile**: [Browser](https://docs.livekit.io/realtime/client/javascript/) · [iOS/macOS/visionOS](https://docs.livekit.io/realtime/client/ios/) · [Android](https://docs.livekit.io/realtime/client/android/) · [Flutter](https://docs.livekit.io/realtime/client/flutter/) · [React Native](https://docs.livekit.io/realtime/client/react-native/)
+- **Other Platforms**: [Rust](https://docs.livekit.io/realtime/client/rust/) · [Node.js](https://docs.livekit.io/realtime/server/node/) · [Python](https://docs.livekit.io/realtime/server/python/) · [Unity](https://docs.livekit.io/realtime/client/unity/) · [Unity (WebGL)](https://docs.livekit.io/realtime/client/unity-web/) · [ESP32](https://github.com/livekit/client-sdk-rust/tree/main/examples/esp32)
+
+### UI Components
+[React](https://docs.livekit.io/realtime/client/react/) · [Android Compose](https://docs.livekit.io/realtime/client/android/) · [SwiftUI](https://docs.livekit.io/realtime/client/ios/) · [Flutter](https://docs.livekit.io/realtime/client/flutter/)
+
+### Agent Frameworks
+[Python](https://docs.livekit.io/agents/overview/) · [Node.js](https://docs.livekit.io/agents/nodejs/) · [Playground](https://agents-playground.livekit.io/)
+
+**Beyond Presence Plugin**: Our official plugins are available for both [Python](https://docs.livekit.io/agents/models/avatar/plugins/bey/) and [Node.js](https://www.npmjs.com/package/@livekit/agents-plugin-bey) agents frameworks, enabling advanced integration scenarios.
+
 ## Resources
 
 - [Beyond Presence Documentation](https://docs.bey.dev)
 - [Beyond Presence API Reference](https://docs.bey.dev/api-reference)
 - [LiveKit Documentation](https://docs.livekit.io)
+- [LiveKit Agents Framework](https://docs.livekit.io/agents/)
 - [Join our Discord Community](https://bey.dev/community)
 
 ## Support
