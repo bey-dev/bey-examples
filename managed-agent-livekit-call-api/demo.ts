@@ -18,7 +18,7 @@ setLogLevel(LogLevel.info);
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 
-const BEY_API_URL = 'http://localhost:7999/v1/calls';
+const BEY_API_URL = 'https://api.bey.dev/v1/calls';
 
 interface BeyCallResponse {
   id: string;
