@@ -19,6 +19,7 @@
         <p class="subtitle">Connect to your AI agent using the Bey API</p>
       </div>
 
+
       <div class="row">
         <div class="col-md-8">
           <div class="card credentials-card">
@@ -50,10 +51,45 @@
               </div>
             </div>
           </div>
-
+          <div id="participants-area"></div>
           <div class="controls-section">
             <div id="status-area">
               <div id="status-message" class="alert" style="display: none;"></div>
+            </div>
+            <div class="device-selects">
+              <div class="form-group">
+                <label for="video-input">Camera</label>
+                <select
+                  id="video-input"
+                  class="form-control"
+                  onchange="appActions.handleDeviceSelected(event)"
+                  disabled
+                >
+                  <option>Camera (default)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="audio-input">Microphone</label>
+                <select
+                  id="audio-input"
+                  class="form-control"
+                  onchange="appActions.handleDeviceSelected(event)"
+                  disabled
+                >
+                  <option>Microphone (default)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="audio-output">Speaker</label>
+                <select
+                  id="audio-output"
+                  class="form-control"
+                  onchange="appActions.handleDeviceSelected(event)"
+                  disabled
+                >
+                  <option>Speaker (default)</option>
+                </select>
+              </div>
             </div>
 
             <div id="actions-area">
@@ -96,41 +132,7 @@
               </div>
             </div>
 
-            <div class="device-selects">
-              <div class="form-group">
-                <label for="video-input">Camera</label>
-                <select
-                  id="video-input"
-                  class="form-control"
-                  onchange="appActions.handleDeviceSelected(event)"
-                  disabled
-                >
-                  <option>Camera (default)</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="audio-input">Microphone</label>
-                <select
-                  id="audio-input"
-                  class="form-control"
-                  onchange="appActions.handleDeviceSelected(event)"
-                  disabled
-                >
-                  <option>Microphone (default)</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="audio-output">Speaker</label>
-                <select
-                  id="audio-output"
-                  class="form-control"
-                  onchange="appActions.handleDeviceSelected(event)"
-                  disabled
-                >
-                  <option>Speaker (default)</option>
-                </select>
-              </div>
-            </div>
+           
           </div>
         </div>
 
@@ -161,8 +163,6 @@
           </div>
         </div>
       </div>
-
-      <div id="participants-area"></div>
     </div>
     <script src="./demo.ts" type="module"></script>
   </body>
