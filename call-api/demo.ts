@@ -209,14 +209,8 @@ async function connectToLiveKit(url: string, token: string): Promise<void> {
     });
 
   try {
-    const publishPromise = new Promise<void>(async (resolve, reject) => {
-      try {
-        await room.localParticipant.enableCameraAndMicrophone();
-        appendLog('Camera and microphone enabled');
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
+    const publishPromise = room.localParticipant.enableCameraAndMicrophone().then(() => {
+      appendLog('Camera and microphone enabled');
     });
 
     await Promise.all([room.connect(url, token), publishPromise]);
