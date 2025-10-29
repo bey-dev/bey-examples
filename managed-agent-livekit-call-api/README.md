@@ -156,15 +156,14 @@ If LiveKit connection fails:
 
 Beyond Presence integrates seamlessly with the entire LiveKit ecosystem:
 
-### Client SDKs
-- **Web & Mobile**: [Browser](https://docs.livekit.io/realtime/client/javascript/) · [iOS/macOS/visionOS](https://docs.livekit.io/realtime/client/ios/) · [Android](https://docs.livekit.io/realtime/client/android/) · [Flutter](https://docs.livekit.io/realtime/client/flutter/) · [React Native](https://docs.livekit.io/realtime/client/react-native/)
-- **Other Platforms**: [Rust](https://docs.livekit.io/realtime/client/rust/) · [Node.js](https://docs.livekit.io/realtime/server/node/) · [Python](https://docs.livekit.io/realtime/server/python/) · [Unity](https://docs.livekit.io/realtime/client/unity/) · [Unity (WebGL)](https://docs.livekit.io/realtime/client/unity-web/) · [ESP32](https://github.com/livekit/client-sdk-rust/tree/main/examples/esp32)
-
-### UI Components
-[React](https://docs.livekit.io/realtime/client/react/) · [Android Compose](https://docs.livekit.io/realtime/client/android/) · [SwiftUI](https://docs.livekit.io/realtime/client/ios/) · [Flutter](https://docs.livekit.io/realtime/client/flutter/)
-
-### Agent Frameworks
-[Python](https://docs.livekit.io/agents/overview/) · [Node.js](https://docs.livekit.io/agents/nodejs/) · [Playground](https://agents-playground.livekit.io/)
+<br/><table>
+<thead><tr><th colspan="2">LiveKit Ecosystem</th></tr></thead>
+<tbody>
+<tr><td>Web & Mobile SDKs</td><td><b><a href="https://github.com/livekit/client-sdk-js">Browser</a></b> · <a href="https://github.com/livekit/client-sdk-swift">iOS/macOS/visionOS</a> · <a href="https://github.com/livekit/client-sdk-android">Android</a> · <a href="https://github.com/livekit/client-sdk-flutter">Flutter</a> · <a href="https://github.com/livekit/client-sdk-react-native">React Native</a></td></tr><tr></tr>
+<tr><td>Other Platforms SDKs</td><td><a href="https://github.com/livekit/rust-sdks">Rust</a> · <a href="https://github.com/livekit/node-sdks">Node.js</a> · <a href="https://github.com/livekit/python-sdks">Python</a> · <a href="https://github.com/livekit/client-sdk-unity">Unity</a> · <a href="https://github.com/livekit/client-sdk-unity-web">Unity (WebGL)</a> · <a href="https://github.com/livekit/client-sdk-esp32">ESP32</a></td></tr><tr></tr>
+<tr><td>UI Components</td><td><a href="https://github.com/livekit/components-js">React</a> · <a href="https://github.com/livekit/components-android">Android Compose</a> · <a href="https://github.com/livekit/components-swift">SwiftUI</a> · <a href="https://github.com/livekit/components-flutter">Flutter</a></td></tr><tr></tr>
+<tr><td>Agents Frameworks</td><td><a href="https://github.com/livekit/agents">Python</a> · <a href="https://github.com/livekit/agents-js">Node.js</a> · <a href="https://github.com/livekit/agent-playground">Playground</a></td></tr><tr></tr>
+</table>
 
 **Beyond Presence Plugin**: Our official plugins are available for both [Python](https://docs.livekit.io/agents/models/avatar/plugins/bey/) and [Node.js](https://www.npmjs.com/package/@livekit/agents-plugin-bey) agents frameworks, enabling advanced integration scenarios.
 
