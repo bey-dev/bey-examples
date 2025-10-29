@@ -2,6 +2,8 @@
 
 A simple, interactive example demonstrating how to use the Beyond Presence Call API to connect users with AI agents through LiveKit.
 
+![Bey Call API Example](demo.png)
+
 ## Overview
 
 The LiveKit-based implementation of our API provides a streamlined approach to integrating interactive avatars into web applications. This example demonstrates using the LiveKit browser SDK, but you can use **any LiveKit client SDK or UI components** based on your stack.
