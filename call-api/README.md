@@ -15,9 +15,9 @@ This example shows how to:
 
 Before running this example, you'll need:
 
-1. **Beyond Presence Account**: Sign up at [app.bey.dev](https://app.bey.dev)
+1. **Beyond Presence Account**: Sign up at [app.bey.chat](https://app.bey.chat)
 2. **API Key**: Get your API key from the Beyond Presence dashboard
-3. **Agent ID**: Create an agent and note its ID from the dashboard
+3. **Agent ID**: Create an agent and note its ID from the dashboard or create an agent using our API.
 4. **Node.js**: Version 18 or higher
 
 ## Setup Instructions
@@ -88,13 +88,13 @@ POST https://api.bey.dev/v1/calls
 **Response:**
 ```json
 {
-  "id": "NgEcBFTZYRgKCKPOqD10",
-  "agent_id": "a0c23ce1-34f9-48ba-96a5-b0b701bef0e4",
+  "id": "call-id",
+  "agent_id": "agent-id",
   "tags": {},
   "started_at": "2025-10-28T10:31:25.159564",
-  "ended_at": null,
-  "livekit_url": "wss://prod-w0h88kyi.livekit.cloud",
-  "livekit_token": "eyJhbGci..."
+  "ended_at": "2025-10-28T10:31:25.159564",
+  "livekit_url": "wss://livekit.bey.chat",
+  "livekit_token": "livekit-token"
 }
 ```
 
@@ -110,16 +110,6 @@ call-api/
 └── README.md        # This file
 ```
 
-## Features
-
-- ✅ Simple, clean UI for API credentials
-- ✅ Real-time audio/video communication
-- ✅ Text chat functionality
-- ✅ Participant video rendering
-- ✅ Connection status logging
-- ✅ Mic and camera controls
-- ✅ Speaking indicator
-- ✅ Responsive design
 
 ## Technologies Used
 
@@ -135,7 +125,7 @@ call-api/
 If you encounter API errors:
 - Verify your API key is correct
 - Check that your Agent ID exists in your dashboard
-- Ensure your API key has the necessary permissions
+
 
 ### Media Permission Issues
 
@@ -156,14 +146,13 @@ If LiveKit connection fails:
 - [Beyond Presence Documentation](https://docs.bey.dev)
 - [Beyond Presence API Reference](https://docs.bey.dev/api-reference)
 - [LiveKit Documentation](https://docs.livekit.io)
-- [Join our Slack Community](https://bey.dev/community)
+- [Join our Discord Community](https://bey.dev/community)
 
 ## Support
 
 Need help? Reach out:
-- 📧 Email: support@beyondpresence.ai
-- 💬 Slack: [bey.dev/community](https://bey.dev/community)
-- 📖 Docs: [docs.bey.dev](https://docs.bey.dev)
+- Email: support@beyondpresence.ai
+- Discord: [bey.dev/community](https://bey.dev/community)
 
 ## License
 
