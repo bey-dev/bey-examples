@@ -156,7 +156,7 @@ If LiveKit connection fails:
 
 Beyond Presence integrates seamlessly with the entire LiveKit ecosystem:
 
-<br/><table>
+<table>
 <thead><tr><th colspan="2">LiveKit Ecosystem</th></tr></thead>
 <tbody>
 <tr><td>Web & Mobile SDKs</td><td><b><a href="https://github.com/livekit/client-sdk-js">Browser</a></b> · <a href="https://github.com/livekit/client-sdk-swift">iOS/macOS/visionOS</a> · <a href="https://github.com/livekit/client-sdk-android">Android</a> · <a href="https://github.com/livekit/client-sdk-flutter">Flutter</a> · <a href="https://github.com/livekit/client-sdk-react-native">React Native</a></td></tr>
