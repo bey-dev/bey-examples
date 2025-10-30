@@ -19,8 +19,8 @@ This example shows how to:
 - Receive LiveKit connection credentials
 - Connect to the call directly through its LiveKit room with audio/video
 - Interact with the managed agent in real-time
-- Switch camera, microphone, and speaker devices
 - Send chat messages during the call
+- Switch camera, microphone, and speaker devices
 
 ## Prerequisites
 
