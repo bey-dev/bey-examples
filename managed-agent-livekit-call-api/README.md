@@ -12,7 +12,6 @@ The LiveKit-based implementation of our API provides a streamlined approach to i
 
 - **Client SDKs**: Use LiveKit SDKs for Browser, iOS/macOS/visionOS, Android, Flutter, React Native, Rust, Node.js, Python, Unity, Unity (WebGL), or ESP32
 - **UI Components**: Leverage pre-built UI components for React, Android Compose, SwiftUI, or Flutter
-- **Agent Frameworks**: For advanced use cases, LiveKit officially supports our plugin for both Python and Node.js agents frameworks
 
 This example shows how to:
 - Call the Beyond Presence API to create a new call with a managed agent
