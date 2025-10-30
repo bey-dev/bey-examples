@@ -17,7 +17,7 @@ The LiveKit-based implementation of our API provides a streamlined approach to i
 This example shows how to:
 - Call the Beyond Presence API to create a new call with a managed agent
 - Receive LiveKit connection credentials
-- Connect to a LiveKit room with audio/video
+- Connect to the call directly through its LiveKit room with audio/video
 - Interact with the managed agent in real-time
 - Switch camera, microphone, and speaker devices
 - Send chat messages during the call
