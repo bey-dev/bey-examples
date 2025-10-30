@@ -22,34 +22,33 @@ This example shows how to:
 - Send chat messages during the call
 - Switch camera, microphone, and speaker devices
 
-## Prerequisites
+## Requirements
 
 Before running this example, you'll need:
 
 1. **Beyond Presence Account**: Sign up at [app.bey.chat](https://app.bey.chat)
 2. **API Key**: Get your API key from the Beyond Presence dashboard
 3. **Agent ID**: Create an agent and note its ID from the dashboard or create an agent using our API.
-4. **Node.js**: Version 18 or higher
 
-## Setup Instructions
+## Setup
 
 ### 1. Install Dependencies
 
-```bash
+```sh
 npm install
 ```
 
 ### 2. Run the Development Server
 
-```bash
+```sh
 npm run dev
 ```
 
-This will start a local development server (typically at `http://localhost:5173`).
+This will start a local development server (typically at <http://localhost:5173>).
 
 ### 3. Open in Browser
 
-Navigate to the URL shown in your terminal (e.g., `http://localhost:5173`).
+Navigate to the URL shown in your terminal (e.g., <http://localhost:5173>).
 
 ## Usage
 
@@ -64,14 +63,14 @@ Navigate to the URL shown in your terminal (e.g., `http://localhost:5173`).
      - Receive LiveKit connection credentials
      - Automatically connect to the LiveKit room
 
-3. **Interact with Your Agent**
+3. **Interact with the Managed Agent**
+   - The agent will appear in the participants area when connected
    - Click "Enable Mic" to allow your microphone
    - Click "Enable Camera" to share your video (optional)
    - Use the chat box to send text messages
-   - The agent will appear in the participants area when connected
 
 4. **End Call**
-   - Click "End Call" to disconnect from the session
+   - Click "End Call" to disconnect from the LiveKit room, ending the call
 
 ## API Reference
 
@@ -103,31 +102,12 @@ POST https://api.bey.dev/v1/calls
   "agent_id": "agent-id",
   "tags": {},
   "started_at": "2025-10-28T10:31:25.159564",
-  "ended_at": "2025-10-28T10:31:25.159564",
+  "ended_at": null,
   "livekit_url": "wss://livekit.bey.chat",
   "livekit_token": "livekit-token"
 }
 ```
 
-## Project Structure
-
-```
-call-api/
-├── index.html       # Main HTML interface
-├── demo.ts          # TypeScript application logic
-├── styles.css       # CSS styling
-├── package.json     # Project dependencies
-├── tsconfig.json    # TypeScript configuration
-└── README.md        # This file
-```
-
-
-## Technologies Used
-
-- **TypeScript** - Type-safe JavaScript
-- **LiveKit Client SDK** - WebRTC communication
-- **Vite** - Fast build tool and dev server
-- **Bootstrap** - UI styling framework
 
 ## Troubleshooting
 
@@ -170,10 +150,9 @@ Beyond Presence integrates seamlessly with the entire LiveKit ecosystem:
 
 ## Resources
 
-- [Beyond Presence Documentation](https://docs.bey.dev)
 - [Beyond Presence API Reference](https://docs.bey.dev/api-reference)
+- [Beyond Presence Documentation](https://docs.bey.dev)
 - [LiveKit Documentation](https://docs.livekit.io)
-- [LiveKit Agents Framework](https://docs.livekit.io/agents/)
 - [Join our Discord Community](https://bey.dev/community)
 
 ## Support
@@ -181,7 +160,3 @@ Beyond Presence integrates seamlessly with the entire LiveKit ecosystem:
 Need help? Reach out:
 - Email: <support@beyondpresence.ai>
 - Discord: [bey.dev/community](https://bey.dev/community)
-
-## License
-
-This example is provided as-is for demonstration purposes.
