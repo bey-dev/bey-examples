@@ -179,7 +179,7 @@ Beyond Presence integrates seamlessly with the entire LiveKit ecosystem:
 ## Support
 
 Need help? Reach out:
-- Email: support@beyondpresence.ai
+- Email: <support@beyondpresence.ai>
 - Discord: [bey.dev/community](https://bey.dev/community)
 
 ## License
