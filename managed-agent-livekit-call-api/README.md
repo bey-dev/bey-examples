@@ -15,7 +15,7 @@ The LiveKit-based implementation of our API provides a streamlined approach to i
 - **Agent Frameworks**: For advanced use cases, LiveKit officially supports our plugin for both Python and Node.js agents frameworks
 
 This example shows how to:
-- Call the Beyond Presence API to create a new call session
+- Call the Beyond Presence API to create a new call with a managed agent
 - Receive LiveKit connection credentials
 - Connect to a LiveKit room with audio/video
 - Interact with the managed agent in real-time
