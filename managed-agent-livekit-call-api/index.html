@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Bey API - Simple Call Example</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+      integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="header-section">
+        <h1>Beyond Presence Call API</h1>
+        <p class="subtitle">Connect to your AI agent using the Bey API</p>
+      </div>
+
+
+      <div class="row">
+        <div class="col-md-8">
+          <div class="card credentials-card">
+            <h5 class="card-title">API Credentials</h5>
+            <div id="credentials-area">
+              <div class="form-group">
+                <label for="api-key">API Key</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="api-key"
+                  placeholder="Enter your API key"
+                />
+                <small class="form-text text-muted">
+                  Get your key from <a href="https://app.bey.chat" target="_blank">app.bey.chat</a>
+                </small>
+              </div>
+              <div class="form-group">
+                <label for="agent-id">Agent ID</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="agent-id"
+                  placeholder="Enter your agent ID"
+                />
+                <small class="form-text text-muted">
+                  Found in your dashboard agents section
+                </small>
+              </div>
+            </div>
+          </div>
+          <div id="participants-area"></div>
+          <div class="controls-section">
+            <div id="status-area">
+              <div id="status-message" class="alert" style="display: none;"></div>
+            </div>
+            <div class="device-selects">
+              <div class="form-group">
+                <label for="video-input">Camera</label>
+                <select
+                  id="video-input"
+                  class="form-control"
+                  onchange="appActions.handleDeviceSelected(event)"
+                  disabled
+                >
+                  <option>Camera (default)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="audio-input">Microphone</label>
+                <select
+                  id="audio-input"
+                  class="form-control"
+                  onchange="appActions.handleDeviceSelected(event)"
+                  disabled
+                >
+                  <option>Microphone (default)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="audio-output">Speaker</label>
+                <select
+                  id="audio-output"
+                  class="form-control"
+                  onchange="appActions.handleDeviceSelected(event)"
+                  disabled
+                >
+                  <option>Speaker (default)</option>
+                </select>
+              </div>
+            </div>
+
+            <div id="actions-area">
+              <button
+                id="start-call-button"
+                class="btn btn-primary btn-lg"
+                type="button"
+                onclick="appActions.startCall()"
+              >
+                Start Call
+              </button>
+              <div class="call-controls">
+                <button
+                  id="toggle-audio-button"
+                  class="btn btn-outline-secondary"
+                  disabled
+                  type="button"
+                  onclick="appActions.toggleAudio()"
+                >
+                  Enable Mic
+                </button>
+                <button
+                  id="toggle-video-button"
+                  class="btn btn-outline-secondary"
+                  disabled
+                  type="button"
+                  onclick="appActions.toggleVideo()"
+                >
+                  Enable Camera
+                </button>
+                <button
+                  id="disconnect-button"
+                  class="btn btn-danger"
+                  disabled
+                  type="button"
+                  onclick="appActions.disconnect()"
+                >
+                  End Call
+                </button>
+              </div>
+            </div>
+
+           
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="card chat-card">
+            <h5 class="card-title">Chat</h5>
+            <div id="chat-area">
+              <textarea class="form-control" id="chat" rows="12" readonly></textarea>
+              <div id="chat-input-area">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="entry"
+                  placeholder="Type a message..."
+                  disabled
+                />
+                <button
+                  id="send-button"
+                  class="btn btn-primary"
+                  type="button"
+                  onclick="appActions.sendMessage()"
+                  disabled
+                >
+                  Send
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="./demo.ts" type="module"></script>
+  </body>
+</html>

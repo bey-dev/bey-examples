@@ -1,0 +1,371 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  padding: 20px 0;
+  background-color: #ffffff;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.container {
+  background-color: white;
+  padding: 40px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header-section {
+  text-align: center;
+  margin-bottom: 40px;
+  padding-bottom: 30px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.header-section h1 {
+  color: #000000;
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  color: #6b7280;
+  font-size: 1.1rem;
+  margin: 0;
+  font-weight: 400;
+}
+
+.card {
+  background-color: #fafafa;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 24px;
+}
+
+.card-title {
+  color: #000000;
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.credentials-card {
+  margin-bottom: 24px;
+}
+
+.credentials-card label {
+  font-weight: 500;
+  color: #000000;
+  margin-bottom: 8px;
+  display: block;
+}
+
+#credentials-area {
+  margin-top: 0;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-control {
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 5px 14px;
+  font-size: 0.95rem;
+  transition: all 0.15s;
+  width: 100%;
+}
+
+.form-control:focus {
+  border-color: #000000;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+  outline: none;
+}
+
+.form-text {
+  font-size: 0.875rem;
+  margin-top: 6px;
+  color: #6b7280;
+}
+
+.form-text a {
+  color: #000000;
+  text-decoration: none;
+  font-weight: 500;
+  border-bottom: 1px solid #d1d5db;
+}
+
+.form-text a:hover {
+  border-bottom-color: #000000;
+}
+
+.controls-section {
+  margin-bottom: 30px;
+}
+
+#status-area {
+  min-height: 60px;
+  margin-bottom: 20px;
+}
+
+#actions-area {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: stretch;
+}
+
+.call-controls {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.device-selects {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.device-selects label {
+  font-weight: 500;
+  color: #000000;
+  font-size: 0.875rem;
+}
+
+.btn {
+  padding: 10px 20px;
+  font-weight: 500;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  transition: all 0.15s;
+  font-size: 0.95rem;
+  cursor: pointer;
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.btn-lg {
+  padding: 14px 28px;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.btn-primary {
+  background-color: #000000;
+  color: #ffffff;
+  border: 1px solid #000000;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #1f1f1f;
+  border-color: #1f1f1f;
+}
+
+.btn-outline-secondary {
+  background-color: #ffffff;
+  color: #000000;
+  border: 1px solid #d1d5db;
+}
+
+.btn-outline-secondary:hover:not(:disabled) {
+  background-color: #f9fafb;
+  border-color: #9ca3af;
+}
+
+.btn-danger {
+  background-color: #000000;
+  color: #ffffff;
+  border: 1px solid #000000;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background-color: #1f1f1f;
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+  background-color: #f3f4f6;
+  color: #9ca3af;
+  border-color: #e5e7eb;
+}
+
+.alert {
+  border-radius: 6px;
+  padding: 12px 16px;
+  margin-bottom: 0;
+  border: 1px solid;
+  font-weight: 400;
+  font-size: 0.95rem;
+}
+
+.alert-success {
+  background-color: #f9fafb;
+  color: #000000;
+  border-color: #e5e7eb;
+}
+
+.alert-danger {
+  background-color: #f9fafb;
+  color: #000000;
+  border-color: #e5e7eb;
+}
+
+.alert-info {
+  background-color: #f9fafb;
+  color: #6b7280;
+  border-color: #e5e7eb;
+}
+
+.chat-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#chat-area {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+#chat {
+  width: 100%;
+  margin-bottom: 15px;
+  resize: none;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace;
+  background-color: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 12px;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: #000000;
+}
+
+#chat:focus {
+  outline: none;
+  border-color: #000000;
+}
+
+#chat-input-area {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  margin-top: auto;
+}
+
+#participants-area {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin: 0 0 40px 0;
+}
+
+.participant {
+  position: relative;
+  padding: 0;
+  margin: 0;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+  background-color: #000000;
+  min-height: 340px;
+  transition: all 0.2s;
+}
+
+.participant:hover {
+  border-color: #000000;
+}
+
+.participant::before {
+  content: '';
+  display: block;
+  padding-bottom: 75%;
+}
+
+.participant video {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000000;
+  object-fit: cover;
+}
+
+.participant audio {
+  display: none;
+}
+
+.participant .info-bar {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #ffffff;
+  padding: 12px 16px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  z-index: 5;
+  font-size: 0.875rem;
+}
+
+.participant .name {
+  font-weight: 600;
+}
+
+.participant .right {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 1.1rem;
+}
+
+.participant.speaking {
+  border: 2px solid #000000;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 20px;
+  }
+
+  .header-section h1 {
+    font-size: 1.75rem;
+  }
+
+  #actions-area {
+    flex-direction: column;
+  }
+
+  .call-controls {
+    flex-direction: column;
+  }
+
+  .call-controls .btn {
+    width: 100%;
+  }
+
+  #participants-area {
+    grid-template-columns: 1fr;
+  }
+
+  .participant {
+    min-height: 240px;
+  }
+}
