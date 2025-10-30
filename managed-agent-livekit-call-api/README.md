@@ -18,7 +18,7 @@ This example shows how to:
 - Call the Beyond Presence API to create a new call session
 - Receive LiveKit connection credentials
 - Connect to a LiveKit room with audio/video
-- Interact with your AI agent in real-time
+- Interact with the managed agent in real-time
 - Switch camera, microphone, and speaker devices
 - Send chat messages during the call
 
