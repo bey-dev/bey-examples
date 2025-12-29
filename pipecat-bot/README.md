@@ -42,6 +42,8 @@ Our video bot then generates synchronized avatar video from this audio stream an
 
 Use any browser and join the room by visiting the `DAILY_ROOM_URL` specified above.
 
+**Note**: The web client shows a three-way conversation, but you can hide the voice agent in your own frontend.
+
 ## Documentation
 
 - [Beyond Presence Integration & API Reference](https://docs.bey.dev/integration/livekit)
